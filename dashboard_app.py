@@ -20,26 +20,27 @@ except ImportError:
 # ── Konstanten ───────────────────────────────────────────────────
 BASE_DIR = Path(__file__).parent
 
-C = {  # Farben
-    "bg":           "#0B0F19",
-    "bg2":          "#111827",
-    "card":         "#1A1F2E",
-    "card_hover":   "#232A3B",
-    "accent":       "#3B82F6",
-    "accent_h":     "#2563EB",
-    "gold":         "#F59E0B",
-    "green":        "#10B981",
-    "red":          "#EF4444",
-    "orange":       "#F97316",
-    "purple":       "#8B5CF6",
-    "cyan":         "#06B6D4",
-    "text":         "#F0F6FC",
-    "muted":        "#6B7280",
-    "border":       "#1F2937",
-    "input":        "#1E293B",
+C = {  # Farben – Studio Light Theme
+    "bg":           "#F1F5F9",   # slate-100 Hintergrund
+    "bg2":          "#FFFFFF",   # Sidebar / Header (weiß)
+    "card":         "#FFFFFF",   # Karten-Hintergrund
+    "card_hover":   "#F8FAFC",   # Karten-Hover
+    "accent":       "#6366F1",   # Indigo – Hauptfarbe
+    "accent_h":     "#4F46E5",   # Indigo dunkel – Hover
+    "gold":         "#D97706",   # Amber
+    "green":        "#059669",   # Emerald
+    "red":          "#DC2626",   # Rot
+    "orange":       "#EA580C",   # Orange
+    "purple":       "#7C3AED",   # Violett
+    "cyan":         "#0284C7",   # Sky-Blau
+    "text":         "#0F172A",   # slate-900 – Haupttext
+    "muted":        "#64748B",   # slate-500 – Nebentext
+    "border":       "#E2E8F0",   # slate-200 – Rahmen
+    "input":        "#F8FAFC",   # Input-Hintergrund
     "step_done":    "#059669",
-    "step_run":     "#2563EB",
-    "step_wait":    "#374151",
+    "step_run":     "#6366F1",
+    "step_wait":    "#CBD5E1",   # slate-300
+    "active_bg":    "#EEF2FF",   # Indigo-50 – aktiver Sidebar-Eintrag
 }
 
 PIPELINE = [
@@ -155,12 +156,12 @@ VOICES = {
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
-        ctk.set_appearance_mode("dark")
+        ctk.set_appearance_mode("light")
         ctk.set_default_color_theme("blue")
         self.configure(fg_color=C["bg"])
-        self.title("YouTube Automation v2.1 – Storytelling Edition")
-        self.geometry("1360x860")
-        self.minsize(1100, 700)
+        self.title("ContentStudio Pro – Video Automation")
+        self.geometry("1400x880")
+        self.minsize(1100, 720)
 
         self.running = False
         self.process = None
@@ -237,21 +238,34 @@ class App(ctk.CTk):
 
     def _build(self):
         # ── Header ───────────────────────────────────────────────
-        hdr = ctk.CTkFrame(self, fg_color=C["bg2"], height=56, corner_radius=0)
+        hdr = ctk.CTkFrame(self, fg_color=C["bg2"], height=60, corner_radius=0,
+                           border_width=1, border_color=C["border"])
         hdr.pack(fill="x")
         hdr.pack_propagate(False)
 
-        ctk.CTkLabel(hdr, text="▶  YouTube Automation",
-                     font=ctk.CTkFont(size=20, weight="bold"),
-                     text_color=C["text"]).pack(side="left", padx=20)
-        ctk.CTkLabel(hdr, text="v2.1",
-                     font=ctk.CTkFont(size=16, weight="bold"),
-                     text_color=C["gold"]).pack(side="left")
+        # Brand
+        brand = ctk.CTkFrame(hdr, fg_color="transparent")
+        brand.pack(side="left", padx=20)
+        ctk.CTkLabel(brand, text="◆",
+                     font=ctk.CTkFont(size=22, weight="bold"),
+                     text_color=C["accent"]).pack(side="left", padx=(0, 8))
+        ctk.CTkLabel(brand, text="ContentStudio",
+                     font=ctk.CTkFont(size=18, weight="bold"),
+                     text_color=C["text"]).pack(side="left")
+        ctk.CTkLabel(brand, text=" Pro",
+                     font=ctk.CTkFont(size=18, weight="bold"),
+                     text_color=C["accent"]).pack(side="left")
 
-        self.status_dot = ctk.CTkLabel(hdr, text="⬤  Bereit",
-                                       font=ctk.CTkFont(size=13, weight="bold"),
+        # Status rechts
+        right = ctk.CTkFrame(hdr, fg_color="transparent")
+        right.pack(side="right", padx=20)
+        self.status_dot = ctk.CTkLabel(right, text="● Bereit",
+                                       font=ctk.CTkFont(size=12, weight="bold"),
                                        text_color=C["green"])
-        self.status_dot.pack(side="right", padx=20)
+        self.status_dot.pack(side="right", padx=(12, 0))
+        ctk.CTkLabel(right, text="v2.1",
+                     font=ctk.CTkFont(size=11),
+                     text_color=C["muted"]).pack(side="right")
 
         # ── Sidebar + Content ────────────────────────────────────
         body = ctk.CTkFrame(self, fg_color="transparent")
@@ -260,44 +274,67 @@ class App(ctk.CTk):
         body.rowconfigure(0, weight=1)
 
         # Sidebar
-        sidebar = ctk.CTkFrame(body, fg_color=C["bg2"], width=200, corner_radius=0)
+        sidebar = ctk.CTkFrame(body, fg_color=C["bg2"], width=220, corner_radius=0,
+                               border_width=1, border_color=C["border"])
         sidebar.grid(row=0, column=0, sticky="ns")
         sidebar.grid_propagate(False)
 
         self.pages = {}
         self.nav_btns = {}
 
-        tabs = [
-            ("🏠", "Dashboard"),
-            ("💡", "Ideen"),
-            ("✨", "Vorschläge"),
-            ("📹", "Videos"),
-            ("📊", "Ergebnisse"),
-            ("📅", "Planer"),
-            ("📖", "Story-Planer"),
-            ("🎨", "Design"),
-            ("🎙️", "Stimmen"),
-            ("⚖️", "Regeln"),
-            ("📺", "Kanäle"),
-            ("📋", "Log"),
-        ]
+        # Sidebar Abschnitt-Label
+        def _section(parent, title: str):
+            ctk.CTkLabel(parent, text=title.upper(),
+                         font=ctk.CTkFont(size=9, weight="bold"),
+                         text_color=C["muted"]).pack(anchor="w", padx=16, pady=(14, 2))
 
-        for icon, label in tabs:
+        _section(sidebar, "Produktion")
+        for icon, label in [("🏠", "Dashboard"), ("💡", "Ideen"),
+                             ("✨", "Vorschläge"), ("📹", "Videos"), ("📊", "Ergebnisse")]:
             btn = ctk.CTkButton(
-                sidebar, text=f"  {icon}  {label}",
-                font=ctk.CTkFont(size=13), height=42,
+                sidebar, text=f"  {icon}   {label}",
+                font=ctk.CTkFont(size=13), height=40,
                 fg_color="transparent", text_color=C["muted"],
-                hover_color=C["card_hover"], anchor="w",
-                corner_radius=0,
+                hover_color=C["active_bg"], anchor="w",
+                corner_radius=6,
                 command=lambda l=label: self._switch_page(l)
             )
-            btn.pack(fill="x", pady=1)
+            btn.pack(fill="x", padx=8, pady=1)
             self.nav_btns[label] = btn
 
-        # Version info am Ende der Sidebar
-        ctk.CTkLabel(sidebar, text="v2.1 • Storytelling Edition",
+        _section(sidebar, "Planung")
+        for icon, label in [("📅", "Planer"), ("📖", "Story-Planer")]:
+            btn = ctk.CTkButton(
+                sidebar, text=f"  {icon}   {label}",
+                font=ctk.CTkFont(size=13), height=40,
+                fg_color="transparent", text_color=C["muted"],
+                hover_color=C["active_bg"], anchor="w",
+                corner_radius=6,
+                command=lambda l=label: self._switch_page(l)
+            )
+            btn.pack(fill="x", padx=8, pady=1)
+            self.nav_btns[label] = btn
+
+        _section(sidebar, "Einstellungen")
+        for icon, label in [("🎨", "Design"), ("🎙️", "Stimmen"),
+                             ("⚖️", "Regeln"), ("📺", "Kanäle"), ("📋", "Log")]:
+            btn = ctk.CTkButton(
+                sidebar, text=f"  {icon}   {label}",
+                font=ctk.CTkFont(size=13), height=40,
+                fg_color="transparent", text_color=C["muted"],
+                hover_color=C["active_bg"], anchor="w",
+                corner_radius=6,
+                command=lambda l=label: self._switch_page(l)
+            )
+            btn.pack(fill="x", padx=8, pady=1)
+            self.nav_btns[label] = btn
+
+        # Version unten
+        ctk.CTkFrame(sidebar, fg_color=C["border"], height=1).pack(
+            fill="x", side="bottom", pady=(0, 0))
+        ctk.CTkLabel(sidebar, text="ContentStudio Pro v2.1",
                      font=ctk.CTkFont(size=10),
-                     text_color=C["border"]).pack(side="bottom", pady=10)
+                     text_color=C["muted"]).pack(side="bottom", pady=8)
 
         # Content-Bereich
         self.content = ctk.CTkFrame(body, fg_color="transparent")
@@ -328,7 +365,7 @@ class App(ctk.CTk):
         if name in self.pages:
             self.pages[name].pack(fill="both", expand=True)
         if name in self.nav_btns:
-            self.nav_btns[name].configure(fg_color=C["card"], text_color=C["text"])
+            self.nav_btns[name].configure(fg_color=C["active_bg"], text_color=C["accent"])
         if name == "Kanäle":
             self._render_channels()
         if name == "Ideen":
@@ -1099,7 +1136,7 @@ class App(ctk.CTk):
 
         # ── Zeile 4: Fehlermeldung (nur bei error) ────────────────
         if error_msg:
-            err_box = ctk.CTkFrame(body, fg_color="#1a0a0a", corner_radius=6,
+            err_box = ctk.CTkFrame(body, fg_color="#FEF2F2", corner_radius=6,
                                    border_width=1, border_color=C["red"])
             err_box.pack(fill="x", pady=(2, 2))
             ctk.CTkLabel(err_box, text=f"⚠️  {error_msg[:200]}",
@@ -2787,7 +2824,7 @@ class App(ctk.CTk):
                     self.after(0, lambda i=i: self._step_done(i))
                 self.after(0, lambda: self._log("✅ Erfolgreich abgeschlossen!"))
                 self.after(0, lambda: self.status_dot.configure(
-                    text="⬤  Fertig ✓", text_color=C["green"]))
+                    text="● Fertig ✓", text_color=C["green"]))
                 # Idee als fertig markieren
                 topic = self.topic_var.get().strip()
                 if topic:
@@ -2798,7 +2835,7 @@ class App(ctk.CTk):
             else:
                 self.after(0, lambda: self._log(f"❌ Fehler (Code {ret})"))
                 self.after(0, lambda: self.status_dot.configure(
-                    text="⬤  Fehler", text_color=C["red"]))
+                    text="● Fehler", text_color=C["red"]))
         except Exception as e:
             self.after(0, lambda: self._log(f"❌ {e}"))
         finally:
@@ -2824,7 +2861,7 @@ class App(ctk.CTk):
         self.running = on
         if on:
             self.run_btn.configure(state="disabled", text="⏳  Läuft...")
-            self.status_dot.configure(text="⬤  Läuft...", text_color=C["accent"])
+            self.status_dot.configure(text="● Läuft...", text_color=C["accent"])
         else:
             self.run_btn.configure(state="normal", text="▶   STARTEN")
 
