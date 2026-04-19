@@ -1,0 +1,122 @@
+{
+  "_ANLEITUNG": [
+    "Diese Datei enthält ALLE Regeln die deine Videos automatisch befolgen.",
+    "Du kannst alles hier ändern - die Automation liest diese Datei bei jedem Start.",
+    "Einfach bearbeiten, speichern, und beim nächsten Video werden die Regeln angewendet."
+  ],
+
+  "disclaimers": {
+    "_info": "Diese Texte werden IMMER in jedes Video und jede Beschreibung eingefügt.",
+
+    "finance_disclaimer": "Dies ist keine Finanzberatung. Alle Inhalte dienen ausschließlich zu Informations- und Bildungszwecken. Investitionen und Trading bergen Risiken, einschließlich des vollständigen Kapitalverlusts. Bitte konsultiere einen qualifizierten Finanzberater bevor du Investitionsentscheidungen triffst.",
+
+    "affiliate_disclaimer": "Einige Links in der Beschreibung können Affiliate-Links sein. Ich erhalte eine kleine Provision wenn du über diese Links kaufst – für dich entstehen keine zusätzlichen Kosten.",
+
+    "ai_generated_disclaimer": "Dieses Video wurde mit Hilfe von KI-Tools erstellt.",
+
+    "active_disclaimers": ["finance_disclaimer", "ai_generated_disclaimer"]
+  },
+
+  "script_rules": {
+    "_info": "Diese Regeln werden dem GPT-Prompt mitgegeben damit das Script sie IMMER beachtet.",
+
+    "mandatory_rules": [
+      "NIEMALS konkrete Kauf- oder Verkaufsempfehlungen für bestimmte Aktien, Kryptowährungen oder Finanzprodukte geben",
+      "IMMER darauf hinweisen dass vergangene Performance keine Garantie für zukünftige Ergebnisse ist",
+      "KEINE garantierten Renditen oder Gewinne versprechen",
+      "IMMER beide Seiten zeigen: Chancen UND Risiken",
+      "NIEMALS Druck aufbauen ('du musst JETZT kaufen', 'letzte Chance')",
+      "KEINE falschen Behauptungen über Prominente oder deren Investment-Strategien",
+      "IMMER den Finance-Disclaimer am Ende des Scripts einfügen",
+      "KEINE urheberrechtlich geschützten Texte, Lyrics oder längere Zitate verwenden"
+    ],
+
+    "style_rules": [
+      "Zuschauer immer mit 'du' ansprechen (nicht 'Sie')",
+      "Bildungscharakter betonen: 'In diesem Video lernst du...'",
+      "Sachlich und fundiert bleiben, kein Hype",
+      "Quellen nennen wenn Statistiken oder Studien zitiert werden",
+      "Am Anfang klar machen dass dies ein Bildungsvideo ist"
+    ],
+
+    "custom_rules": [
+      "Hier kannst du eigene Regeln hinzufügen die in jedem Script beachtet werden"
+    ]
+  },
+
+  "forbidden_words": {
+    "_info": "Diese Wörter/Phrasen werden automatisch erkannt und aus dem Script entfernt oder ersetzt.",
+
+    "hard_block": [
+      "garantierter Gewinn",
+      "100% sicher",
+      "kein Risiko",
+      "reich werden über Nacht",
+      "schnell reich werden",
+      "Geheimtipp",
+      "todsichere Strategie",
+      "kann nicht verlieren",
+      "risikofreie Rendite",
+      "Geld-zurück-Garantie"
+    ],
+
+    "replacements": {
+      "garantierte Rendite": "mögliche Rendite",
+      "immer profitabel": "historisch profitabel",
+      "du MUSST investieren": "du könntest in Betracht ziehen",
+      "wirst du reich": "kannst du langfristig Vermögen aufbauen",
+      "hundertprozentig sicher": "mit hoher Wahrscheinlichkeit",
+      "jeder kann das": "mit dem richtigen Wissen und Übung",
+      "einfach Geld verdienen": "eine Einkommensmöglichkeit aufbauen",
+      "kein Risiko dabei": "mit überschaubarem Risiko"
+    }
+  },
+
+  "youtube_compliance": {
+    "_info": "YouTube-spezifische Regeln gegen Strikes und Demonetarisierung.",
+
+    "title_rules": {
+      "max_caps_percent": 50,
+      "max_length": 100,
+      "forbidden_in_title": ["KOSTENLOS", "GRATIS GELD", "HACK", "GEHEIM"]
+    },
+
+    "description_rules": {
+      "must_include": ["disclaimer"],
+      "max_hashtags": 15,
+      "max_links": 10
+    },
+
+    "content_flags": [
+      "Kein Clickbait der nicht zum Inhalt passt",
+      "Keine übertriebenen Versprechungen im Thumbnail-Text",
+      "Keine irreführenden Vorher-Nachher Darstellungen",
+      "Keine medizinischen Ratschläge",
+      "Kein Inhalt der speziell an Minderjährige gerichtet ist (Finance-Kontext)"
+    ]
+  },
+
+  "country_specific": {
+    "_info": "Länderspezifische Regeln (Deutschland/EU).",
+
+    "germany": {
+      "impressum_required": true,
+      "impressum_text": "DEIN IMPRESSUM HIER EINFÜGEN (Pflicht in Deutschland für geschäftliche YouTube-Kanäle)",
+      "werbekennzeichnung": "Werbung und Affiliate-Links müssen als solche gekennzeichnet werden",
+      "datenschutz_hinweis": "Datenschutzhinweis-Link in der Beschreibung empfohlen"
+    },
+
+    "eu": {
+      "dsgvo_compliant": true,
+      "cookie_note_if_website": true
+    }
+  },
+
+  "metadata": {
+    "version": "1.0",
+    "last_updated": "2026-04-12",
+    "auto_check_enabled": true,
+    "block_upload_on_violation": true,
+    "log_violations": true
+  }
+}

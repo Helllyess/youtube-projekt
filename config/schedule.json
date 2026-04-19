@@ -1,0 +1,23 @@
+{
+  "enabled": false,
+  "posts_per_week": 7,
+  "preferred_days": [
+    "Montag",
+    "Dienstag",
+    "Mittwoch",
+    "Freitag"
+  ],
+  "preferred_time": "17:00",
+  "queue": [
+    {
+      "video_id": 3,
+      "scheduled_date": "2026-04-15 16:00",
+      "status": "queued"
+    },
+    {
+      "video_id": 4,
+      "scheduled_date": "2026-04-17 16:00",
+      "status": "queued"
+    }
+  ]
+}

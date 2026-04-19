@@ -1,0 +1,11 @@
+{
+  "timestamp": "20260412_212049",
+  "status": "error",
+  "topic": "Die besten Dividendenaktien 2026: Diese Werte bringen dir passives Einkommen!",
+  "script_path": null,
+  "audio_path": null,
+  "video_path": null,
+  "thumbnail_path": null,
+  "youtube_url": null,
+  "error": "name 'Path' is not defined"
+}

@@ -1,0 +1,11 @@
+{
+  "timestamp": "20260413_214523",
+  "status": "error",
+  "topic": "7 geheime Daytrading-Strategien für den aktuellen Markt: So profitierst du von der Volatilität 2026",
+  "script_path": "channels\\kanal_hauptkanal\\output\\20260413_214523\\script.json",
+  "audio_path": null,
+  "video_path": null,
+  "thumbnail_path": null,
+  "youtube_url": null,
+  "error": "402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts"
+}

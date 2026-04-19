@@ -1,0 +1,55 @@
+{
+  "id": "kanal_hauptkanal",
+  "name": "Mein Hauptkanal",
+  "platform": "youtube",
+  "niche": "finance_daytrading",
+  "language": "de",
+  "active": true,
+
+  "upload": {
+    "default_privacy": "private",
+    "default_category": "25",
+    "made_for_kids": false,
+    "notify_subscribers": true,
+    "schedule_delay_hours": 0
+  },
+
+  "script": {
+    "target_duration_minutes": 8,
+    "style": "educational_engaging",
+    "language": "de"
+  },
+
+  "voiceover": {
+    "provider": "fish_audio",
+    "fish_voice_id": "54a5170264694bfc8e9ad98df7bd89c3"
+  },
+
+  "topics": [
+    "Daytrading Strategien für Anfänger",
+    "Aktienmarkt Analyse heute",
+    "Kryptowährungen 2025",
+    "Trading Psychologie",
+    "Technische Analyse Grundlagen",
+    "Passives Einkommen Aktien",
+    "Dividendenstrategie",
+    "Vermögensaufbau mit ETFs"
+  ],
+
+  "default_tags": [
+    "Daytrading", "Aktien", "Trading", "Finanzen", "Börse",
+    "Investieren", "Stock Market", "Krypto", "ETF"
+  ],
+
+  "branding": {
+    "outro_text": "Abonniere den Kanal für tägliche Finance-Insights!",
+    "watermark": false
+  },
+
+  "_ANLEITUNG": {
+    "schritt1": "Ersetze 'youtube_client_secret.json' mit deiner OAuth-Datei von console.cloud.google.com",
+    "schritt2": "Ändere 'name' zu deinem echten Kanalnamen",
+    "schritt3": "Passe 'topics' und 'default_tags' an deinen Kanal an",
+    "schritt4": "Starte: python main.py --channel kanal_hauptkanal"
+  }
+}

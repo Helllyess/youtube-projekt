@@ -1,0 +1,11 @@
+{
+  "timestamp": "20260414_212038",
+  "status": "error",
+  "topic": "Die besten Dividendenaktien für 2026: Passives Einkommen mit Sicherheit",
+  "script_path": "channels\\kanal_hauptkanal\\output\\20260414_212038\\script.json",
+  "audio_path": null,
+  "video_path": null,
+  "thumbnail_path": null,
+  "youtube_url": null,
+  "error": "402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts"
+}

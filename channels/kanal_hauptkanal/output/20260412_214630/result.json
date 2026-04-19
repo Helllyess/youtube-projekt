@@ -1,0 +1,11 @@
+{
+  "timestamp": "20260412_214630",
+  "status": "error",
+  "topic": "Story telling",
+  "script_path": null,
+  "audio_path": null,
+  "video_path": null,
+  "thumbnail_path": null,
+  "youtube_url": null,
+  "error": "name 'Path' is not defined"
+}

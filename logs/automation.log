@@ -1,0 +1,483 @@
+2026-04-09 17:01:32,839 [INFO] main: ============================================================
+2026-04-09 17:01:32,839 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-09 17:01:32,839 [INFO] main: ============================================================
+2026-04-09 17:01:32,842 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-09 17:01:34,455 [INFO] researcher: Suche trending Topic...
+2026-04-09 17:01:41,579 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-09 17:01:41,579 [INFO] openai._base_client: Retrying request to /chat/completions in 0.458572 seconds
+2026-04-09 17:01:42,808 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-09 17:01:42,808 [INFO] openai._base_client: Retrying request to /chat/completions in 0.824154 seconds
+2026-04-09 17:01:44,452 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-09 17:01:44,452 [WARNING] researcher: API-Fehler bei Recherche: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}. Nutze Fallback-Topic.
+2026-04-09 17:01:44,452 [INFO] main:    Topic: Options Trading
+2026-04-09 17:01:44,452 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-09 17:01:44,883 [INFO] scriptwriter: Erstelle Script für: 'Options Trading'
+2026-04-09 17:01:45,684 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-09 17:01:45,684 [INFO] openai._base_client: Retrying request to /chat/completions in 0.394851 seconds
+2026-04-09 17:01:46,502 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-09 17:01:46,502 [INFO] openai._base_client: Retrying request to /chat/completions in 0.850651 seconds
+2026-04-09 17:01:48,065 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-09 17:01:48,065 [ERROR] scriptwriter: Script-Generierung fehlgeschlagen: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-04-09 17:01:48,065 [ERROR] main: ❌ Pipeline-Fehler: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 86, in run_pipeline
+    script = writer.create_script(video_topic, keywords)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 30, in create_script
+    script_data = self._generate_script(topic, keywords)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 113, in _generate_script
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_utils\_utils.py", line 286, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\resources\chat\completions\completions.py", line 1211, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1297, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1070, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-04-12 20:53:00,001 [INFO] main: 
+============================================================
+2026-04-12 20:53:00,017 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-12 20:53:00,017 [INFO] main: ============================================================
+2026-04-12 20:53:00,033 [INFO] main: ============================================================
+2026-04-12 20:53:00,033 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-12 20:53:00,033 [INFO] main: ============================================================
+2026-04-12 20:53:00,033 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-12 20:53:01,722 [INFO] researcher: Suche trending Topic...
+2026-04-12 20:53:08,465 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-12 20:53:08,465 [INFO] openai._base_client: Retrying request to /chat/completions in 0.411282 seconds
+2026-04-12 20:53:09,493 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-12 20:53:09,493 [INFO] openai._base_client: Retrying request to /chat/completions in 0.895222 seconds
+2026-04-12 20:53:10,920 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-12 20:53:10,920 [WARNING] researcher: API-Fehler bei Recherche: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}. Nutze Fallback-Topic.
+2026-04-12 20:53:10,920 [INFO] main:    Topic: Aktienmarkt Analyse heute
+2026-04-12 20:53:10,920 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-12 20:53:11,358 [INFO] scriptwriter: Erstelle Script für: 'Aktienmarkt Analyse heute'
+2026-04-12 20:53:12,231 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-12 20:53:12,231 [INFO] openai._base_client: Retrying request to /chat/completions in 0.498870 seconds
+2026-04-12 20:53:13,046 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-12 20:53:13,046 [INFO] openai._base_client: Retrying request to /chat/completions in 0.952242 seconds
+2026-04-12 20:53:14,384 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-12 20:53:14,384 [ERROR] scriptwriter: Script-Generierung fehlgeschlagen: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-04-12 20:53:14,384 [ERROR] main: ❌ Pipeline-Fehler: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 88, in run_pipeline
+    script = writer.create_script(video_topic, keywords)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 30, in create_script
+    script_data = self._generate_script(topic, keywords)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 113, in _generate_script
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_utils\_utils.py", line 286, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\resources\chat\completions\completions.py", line 1211, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1297, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1070, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-04-12 21:20:02,888 [INFO] main: 
+============================================================
+2026-04-12 21:20:02,904 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-12 21:20:02,904 [INFO] main: ============================================================
+2026-04-12 21:20:02,904 [INFO] main: ============================================================
+2026-04-12 21:20:02,904 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-12 21:20:02,904 [INFO] main: ============================================================
+2026-04-12 21:20:02,904 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-12 21:20:04,081 [INFO] researcher: Suche trending Topic...
+2026-04-12 21:20:13,443 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-12 21:20:13,490 [INFO] researcher: Topic gefunden: 'Die besten Daytrading Strategien für das volatile Marktumfeld 2026' (Viral-Score: 9/10)
+2026-04-12 21:20:13,490 [INFO] main:    Topic: Die besten Daytrading Strategien für das volatile Marktumfeld 2026
+2026-04-12 21:20:13,490 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-12 21:20:13,912 [INFO] scriptwriter: Erstelle Script für: 'Die besten Daytrading Strategien für das volatile Marktumfeld 2026'
+2026-04-12 21:20:13,912 [ERROR] main: ❌ Pipeline-Fehler: name 'Path' is not defined
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 88, in run_pipeline
+    script = writer.create_script(video_topic, keywords)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 30, in create_script
+    self._load_legal_rules()
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 58, in _load_legal_rules
+    rules_file = Path(__file__).parent / "config" / "legal_rules.json"
+                 ^^^^
+NameError: name 'Path' is not defined
+2026-04-12 21:20:49,017 [INFO] main: 
+============================================================
+2026-04-12 21:20:49,017 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-12 21:20:49,017 [INFO] main: ============================================================
+2026-04-12 21:20:49,032 [INFO] main: ============================================================
+2026-04-12 21:20:49,032 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-12 21:20:49,032 [INFO] main: ============================================================
+2026-04-12 21:20:49,032 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-12 21:20:49,519 [INFO] researcher: Suche trending Topic...
+2026-04-12 21:20:55,009 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-12 21:20:55,025 [INFO] researcher: Topic gefunden: 'Die besten Dividendenaktien 2026: Diese Werte bringen dir passives Einkommen!' (Viral-Score: 9/10)
+2026-04-12 21:20:55,025 [INFO] main:    Topic: Die besten Dividendenaktien 2026: Diese Werte bringen dir passives Einkommen!
+2026-04-12 21:20:55,025 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-12 21:20:55,467 [INFO] scriptwriter: Erstelle Script für: 'Die besten Dividendenaktien 2026: Diese Werte bringen dir passives Einkommen!'
+2026-04-12 21:20:55,467 [ERROR] main: ❌ Pipeline-Fehler: name 'Path' is not defined
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 88, in run_pipeline
+    script = writer.create_script(video_topic, keywords)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 30, in create_script
+    self._load_legal_rules()
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 58, in _load_legal_rules
+    rules_file = Path(__file__).parent / "config" / "legal_rules.json"
+                 ^^^^
+NameError: name 'Path' is not defined
+2026-04-12 21:20:57,413 [INFO] main: 
+============================================================
+2026-04-12 21:20:57,419 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-12 21:20:57,419 [INFO] main: ============================================================
+2026-04-12 21:20:57,420 [INFO] main: ============================================================
+2026-04-12 21:20:57,420 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-12 21:20:57,420 [INFO] main: ============================================================
+2026-04-12 21:20:57,420 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-12 21:20:57,889 [INFO] researcher: Suche trending Topic...
+2026-04-12 21:21:02,383 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-12 21:21:02,399 [INFO] researcher: Topic gefunden: 'Die besten Daytrading Strategien für volatile Märkte 2026' (Viral-Score: 9/10)
+2026-04-12 21:21:02,399 [INFO] main:    Topic: Die besten Daytrading Strategien für volatile Märkte 2026
+2026-04-12 21:21:02,399 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-12 21:21:02,855 [INFO] scriptwriter: Erstelle Script für: 'Die besten Daytrading Strategien für volatile Märkte 2026'
+2026-04-12 21:21:02,855 [ERROR] main: ❌ Pipeline-Fehler: name 'Path' is not defined
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 88, in run_pipeline
+    script = writer.create_script(video_topic, keywords)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 30, in create_script
+    self._load_legal_rules()
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 58, in _load_legal_rules
+    rules_file = Path(__file__).parent / "config" / "legal_rules.json"
+                 ^^^^
+NameError: name 'Path' is not defined
+2026-04-12 21:21:16,256 [INFO] main: ============================================================
+2026-04-12 21:21:16,256 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-12 21:21:16,256 [INFO] main: ============================================================
+2026-04-12 21:21:16,256 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-12 21:21:16,740 [INFO] researcher: Suche trending Topic...
+2026-04-12 21:21:21,758 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-12 21:21:21,773 [INFO] researcher: Topic gefunden: 'Die besten Daytrading Strategien für volatile Märkte im Jahr 2026' (Viral-Score: 9/10)
+2026-04-12 21:21:21,773 [INFO] main:    Topic: Die besten Daytrading Strategien für volatile Märkte im Jahr 2026
+2026-04-12 21:21:21,773 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-12 21:21:22,227 [INFO] scriptwriter: Erstelle Script für: 'Die besten Daytrading Strategien für volatile Märkte im Jahr 2026'
+2026-04-12 21:21:22,227 [ERROR] main: ❌ Pipeline-Fehler: name 'Path' is not defined
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 88, in run_pipeline
+    script = writer.create_script(video_topic, keywords)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 30, in create_script
+    self._load_legal_rules()
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 58, in _load_legal_rules
+    rules_file = Path(__file__).parent / "config" / "legal_rules.json"
+                 ^^^^
+NameError: name 'Path' is not defined
+2026-04-12 21:21:58,305 [INFO] main: 
+============================================================
+2026-04-12 21:21:58,305 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-12 21:21:58,305 [INFO] main: ============================================================
+2026-04-12 21:21:58,305 [INFO] main: ============================================================
+2026-04-12 21:21:58,305 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-12 21:21:58,305 [INFO] main: ============================================================
+2026-04-12 21:21:58,305 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-12 21:21:58,789 [INFO] main:    Topic: Story telling
+2026-04-12 21:21:58,789 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-12 21:21:59,223 [INFO] scriptwriter: Erstelle Script für: 'Story telling'
+2026-04-12 21:21:59,223 [ERROR] main: ❌ Pipeline-Fehler: name 'Path' is not defined
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 88, in run_pipeline
+    script = writer.create_script(video_topic, keywords)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 30, in create_script
+    self._load_legal_rules()
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 58, in _load_legal_rules
+    rules_file = Path(__file__).parent / "config" / "legal_rules.json"
+                 ^^^^
+NameError: name 'Path' is not defined
+2026-04-12 21:46:30,844 [INFO] main: 
+============================================================
+2026-04-12 21:46:30,859 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-12 21:46:30,859 [INFO] main: ============================================================
+2026-04-12 21:46:30,859 [INFO] main: ============================================================
+2026-04-12 21:46:30,859 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-12 21:46:30,859 [INFO] main: ============================================================
+2026-04-12 21:46:30,859 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-12 21:46:31,371 [INFO] main:    Topic: Story telling
+2026-04-12 21:46:31,371 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-12 21:46:31,812 [INFO] scriptwriter: Erstelle Script für: 'Story telling'
+2026-04-12 21:46:31,812 [ERROR] main: ❌ Pipeline-Fehler: name 'Path' is not defined
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 88, in run_pipeline
+    script = writer.create_script(video_topic, keywords)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 30, in create_script
+    self._load_legal_rules()
+  File "C:\Users\AminF\Desktop\youtube-automation\scriptwriter.py", line 58, in _load_legal_rules
+    rules_file = Path(__file__).parent / "config" / "legal_rules.json"
+                 ^^^^
+NameError: name 'Path' is not defined
+2026-04-13 21:07:43,384 [INFO] main: 
+============================================================
+2026-04-13 21:07:43,571 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-13 21:07:43,571 [INFO] main: ============================================================
+2026-04-13 21:07:43,571 [INFO] main: ============================================================
+2026-04-13 21:07:43,571 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-13 21:07:43,571 [INFO] main: ============================================================
+2026-04-13 21:07:44,024 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-13 21:08:30,529 [INFO] researcher: Suche trending Topic...
+2026-04-13 21:09:00,465 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-13 21:09:01,218 [INFO] researcher: Topic gefunden: 'Die besten Daytrading Strategien für den volatilen Aktienmarkt 2026' (Viral-Score: 9/10)
+2026-04-13 21:09:01,219 [INFO] main:    Topic: Die besten Daytrading Strategien für den volatilen Aktienmarkt 2026
+2026-04-13 21:09:01,219 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-13 21:09:01,818 [INFO] scriptwriter: Erstelle Script für: 'Die besten Daytrading Strategien für den volatilen Aktienmarkt 2026'
+2026-04-13 21:09:02,326 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-13 21:09:02,326 [INFO] scriptwriter: Legal-Rules in Prompt geladen ✓
+2026-04-13 21:09:13,379 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-13 21:09:19,040 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-13 21:09:19,041 [INFO] scriptwriter: Script erstellt: '🚀 Daytrading Hacks: Gewinne 2026 sichern!' (~8 Min.)
+2026-04-13 21:09:19,091 [INFO] main:    Script gespeichert: channels\kanal_hauptkanal\output\20260413_210744\script.json
+2026-04-13 21:09:19,091 [INFO] main: ✅ Schritt 3: Compliance-Check...
+2026-04-13 21:09:19,563 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-13 21:09:21,667 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-13 21:09:21,668 [WARNING] compliance: COMPLIANCE ISSUE: PFLICHT: Finance-Disclaimer fehlt in der Beschreibung
+2026-04-13 21:09:21,668 [WARNING] compliance: COMPLIANCE ISSUE: KI-Disclaimer fehlt in der Beschreibung
+2026-04-13 21:09:21,669 [INFO] compliance: COMPLIANCE WARN: Verbotenes Wort im Titel: 'HACK'
+2026-04-13 21:09:21,669 [INFO] compliance: COMPLIANCE WARN: Keine konkreten Kauf- oder Verkaufsempfehlungen gegeben
+2026-04-13 21:09:21,669 [INFO] compliance: COMPLIANCE WARN: Es wird nicht darauf hingewiesen, dass vergangene Performance keine Garantie für zukünftige Ergebnisse ist
+2026-04-13 21:09:21,669 [INFO] compliance: COMPLIANCE WARN: Es werden keine garantierten Renditen oder Gewinne versprochen
+2026-04-13 21:09:21,669 [INFO] compliance: COMPLIANCE WARN: Es wird nicht ausreichend auf die Risiken hingewiesen
+2026-04-13 21:09:21,669 [INFO] compliance: COMPLIANCE WARN: Es fehlt der Finance-Disclaimer am Ende des Scripts
+2026-04-13 21:09:21,669 [INFO] compliance: COMPLIANCE WARN: Impressum noch nicht ausgefüllt (config/legal_rules.json → country_specific → germany → impressum_text)
+2026-04-13 21:09:21,959 [WARNING] compliance: ❌ Compliance-Check FEHLGESCHLAGEN: 2 Issues, 7 Warnungen
+2026-04-13 21:09:21,962 [WARNING] main:    Compliance-Probleme: ['PFLICHT: Finance-Disclaimer fehlt in der Beschreibung', 'KI-Disclaimer fehlt in der Beschreibung']
+2026-04-13 21:09:21,962 [INFO] compliance: 🔧 Repariere Compliance-Probleme...
+2026-04-13 21:09:21,964 [INFO] compliance:    ✓ Impressum hinzugefügt
+2026-04-13 21:09:21,970 [INFO] main: 🎙️  Schritt 4: Voiceover-Erstellung...
+2026-04-13 21:09:21,970 [INFO] voiceover: Voiceover-Provider: fish_audio
+2026-04-13 21:09:22,000 [ERROR] main: ❌ Pipeline-Fehler: No module named 'requests'
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 109, in run_pipeline
+    vo.create(script["full_text"], str(audio_path))
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover.py", line 24, in create
+    from voiceover_fish import FishAudioVoiceover
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 11, in <module>
+    import requests
+ModuleNotFoundError: No module named 'requests'
+2026-04-13 21:09:22,163 [INFO] scheduler: Video zur Historie hinzugefügt: Die besten Daytrading Strategien für den volatilen Aktienmarkt 2026
+2026-04-13 21:09:22,362 [INFO] main: 📋 Video zur Historie hinzugefügt
+2026-04-13 21:22:41,663 [INFO] main: 
+============================================================
+2026-04-13 21:22:41,695 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-13 21:22:41,695 [INFO] main: ============================================================
+2026-04-13 21:22:41,695 [INFO] main: ============================================================
+2026-04-13 21:22:41,695 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-13 21:22:41,695 [INFO] main: ============================================================
+2026-04-13 21:22:41,726 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-13 21:22:43,429 [INFO] researcher: Suche trending Topic...
+2026-04-13 21:22:53,410 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-13 21:22:53,639 [INFO] researcher: Topic gefunden: 'Die besten Daytrading Strategien für volatile Märkte im Jahr 2026' (Viral-Score: 9/10)
+2026-04-13 21:22:53,639 [INFO] main:    Topic: Die besten Daytrading Strategien für volatile Märkte im Jahr 2026
+2026-04-13 21:22:53,639 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-13 21:22:54,095 [INFO] scriptwriter: Erstelle Script für: 'Die besten Daytrading Strategien für volatile Märkte im Jahr 2026'
+2026-04-13 21:22:54,566 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-13 21:22:54,566 [INFO] scriptwriter: Legal-Rules in Prompt geladen ✓
+2026-04-13 21:23:03,922 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-13 21:23:09,848 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-13 21:23:09,857 [INFO] scriptwriter: Script erstellt: '🚀 Daytrading 2026: Top-Strategien! 📈' (~8 Min.)
+2026-04-13 21:23:09,868 [INFO] main:    Script gespeichert: channels\kanal_hauptkanal\output\20260413_212241\script.json
+2026-04-13 21:23:09,868 [INFO] main: ✅ Schritt 3: Compliance-Check...
+2026-04-13 21:23:10,353 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-13 21:23:12,734 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-13 21:23:12,737 [WARNING] compliance: COMPLIANCE ISSUE: PFLICHT: Finance-Disclaimer fehlt in der Beschreibung
+2026-04-13 21:23:12,737 [WARNING] compliance: COMPLIANCE ISSUE: KI-Disclaimer fehlt in der Beschreibung
+2026-04-13 21:23:12,737 [INFO] compliance: COMPLIANCE WARN: Mangelnde Betonung auf Risiken und Chancen
+2026-04-13 21:23:12,737 [INFO] compliance: COMPLIANCE WARN: Fehlender Disclaimer am Ende des Scripts
+2026-04-13 21:23:12,737 [INFO] compliance: COMPLIANCE WARN: Verwendung von Begriffen wie 'Geheimnisse' und 'Top-Strategien', die als Clickbait interpretiert werden könnten
+2026-04-13 21:23:12,737 [INFO] compliance: COMPLIANCE WARN: Unklare Formulierung, die möglicherweise als Kaufempfehlung interpretiert werden kann
+2026-04-13 21:23:12,737 [INFO] compliance: COMPLIANCE WARN: Impressum noch nicht ausgefüllt (config/legal_rules.json → country_specific → germany → impressum_text)
+2026-04-13 21:23:12,784 [WARNING] compliance: ❌ Compliance-Check FEHLGESCHLAGEN: 2 Issues, 5 Warnungen
+2026-04-13 21:23:12,784 [WARNING] main:    Compliance-Probleme: ['PFLICHT: Finance-Disclaimer fehlt in der Beschreibung', 'KI-Disclaimer fehlt in der Beschreibung']
+2026-04-13 21:23:12,784 [INFO] compliance: 🔧 Repariere Compliance-Probleme...
+2026-04-13 21:23:12,784 [INFO] compliance:    ✓ Impressum hinzugefügt
+2026-04-13 21:23:12,909 [INFO] main: 🎙️  Schritt 4: Voiceover-Erstellung...
+2026-04-13 21:23:12,909 [INFO] voiceover: Voiceover-Provider: fish_audio
+2026-04-13 21:23:12,924 [ERROR] main: ❌ Pipeline-Fehler: No module named 'requests'
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 109, in run_pipeline
+    vo.create(script["full_text"], str(audio_path))
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover.py", line 24, in create
+    from voiceover_fish import FishAudioVoiceover
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 11, in <module>
+    import requests
+ModuleNotFoundError: No module named 'requests'
+2026-04-13 21:23:13,270 [INFO] scheduler: Video zur Historie hinzugefügt: Die besten Daytrading Strategien für volatile Märkte im Jahr 2026
+2026-04-13 21:23:13,301 [INFO] main: 📋 Video zur Historie hinzugefügt
+2026-04-13 21:45:23,289 [INFO] main: 
+============================================================
+2026-04-13 21:45:23,298 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-13 21:45:23,299 [INFO] main: ============================================================
+2026-04-13 21:45:23,301 [INFO] main: ============================================================
+2026-04-13 21:45:23,301 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-13 21:45:23,302 [INFO] main: ============================================================
+2026-04-13 21:45:23,304 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-13 21:45:24,096 [INFO] researcher: Suche trending Topic...
+2026-04-13 21:45:29,688 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-13 21:45:29,697 [INFO] researcher: Topic gefunden: '7 geheime Daytrading-Strategien für den aktuellen Markt: So profitierst du von der Volatilität 2026' (Viral-Score: 9/10)
+2026-04-13 21:45:29,697 [INFO] main:    Topic: 7 geheime Daytrading-Strategien für den aktuellen Markt: So profitierst du von der Volatilität 2026
+2026-04-13 21:45:29,697 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-13 21:45:30,128 [INFO] scriptwriter: Erstelle Script für: '7 geheime Daytrading-Strategien für den aktuellen Markt: So profitierst du von der Volatilität 2026'
+2026-04-13 21:45:30,562 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-13 21:45:30,562 [INFO] scriptwriter: Legal-Rules in Prompt geladen ✓
+2026-04-13 21:45:41,140 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-13 21:45:46,722 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-13 21:45:46,722 [INFO] scriptwriter: Script erstellt: '🚀 7 geheime Daytrading-Strategien 2026!' (~8 Min.)
+2026-04-13 21:45:46,722 [INFO] main:    Script gespeichert: channels\kanal_hauptkanal\output\20260413_214523\script.json
+2026-04-13 21:45:46,722 [INFO] main: ✅ Schritt 3: Compliance-Check...
+2026-04-13 21:45:47,175 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-13 21:45:49,431 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-13 21:45:49,431 [WARNING] compliance: COMPLIANCE ISSUE: PFLICHT: Finance-Disclaimer fehlt in der Beschreibung
+2026-04-13 21:45:49,431 [WARNING] compliance: COMPLIANCE ISSUE: KI-Disclaimer fehlt in der Beschreibung
+2026-04-13 21:45:49,431 [INFO] compliance: COMPLIANCE WARN: Verbotenes Wort im Titel: 'GEHEIM'
+2026-04-13 21:45:49,431 [INFO] compliance: COMPLIANCE WARN: Keine konkreten Kauf- oder Verkaufsempfehlungen gegeben
+2026-04-13 21:45:49,431 [INFO] compliance: COMPLIANCE WARN: Es wird nicht ausdrücklich darauf hingewiesen, dass vergangene Performance keine Garantie für zukünftige Ergebnisse ist
+2026-04-13 21:45:49,431 [INFO] compliance: COMPLIANCE WARN: Es werden keine garantierten Renditen oder Gewinne versprochen
+2026-04-13 21:45:49,431 [INFO] compliance: COMPLIANCE WARN: Es wird nicht ausreichend auf die Risiken hingewiesen
+2026-04-13 21:45:49,431 [INFO] compliance: COMPLIANCE WARN: Es fehlt der Finance-Disclaimer am Ende des Scripts
+2026-04-13 21:45:49,431 [INFO] compliance: COMPLIANCE WARN: Impressum noch nicht ausgefüllt (config/legal_rules.json → country_specific → germany → impressum_text)
+2026-04-13 21:45:49,447 [WARNING] compliance: ❌ Compliance-Check FEHLGESCHLAGEN: 2 Issues, 7 Warnungen
+2026-04-13 21:45:49,447 [WARNING] main:    Compliance-Probleme: ['PFLICHT: Finance-Disclaimer fehlt in der Beschreibung', 'KI-Disclaimer fehlt in der Beschreibung']
+2026-04-13 21:45:49,447 [INFO] compliance: 🔧 Repariere Compliance-Probleme...
+2026-04-13 21:45:49,447 [INFO] compliance:    ✓ Impressum hinzugefügt
+2026-04-13 21:45:49,572 [INFO] main: 🎙️  Schritt 4: Voiceover-Erstellung...
+2026-04-13 21:45:49,572 [INFO] voiceover: Voiceover-Provider: fish_audio
+2026-04-13 21:45:49,728 [INFO] voiceover_fish: Fish Audio TTS: 3353 Zeichen → channels\kanal_hauptkanal\output\20260413_214523\voiceover.mp3
+2026-04-13 21:45:50,960 [ERROR] voiceover_fish: Fish Audio API Fehler 402: {"message":"Insufficient Balance","status":402}
+2026-04-13 21:45:50,960 [ERROR] main: ❌ Pipeline-Fehler: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 109, in run_pipeline
+    vo.create(script["full_text"], str(audio_path))
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover.py", line 32, in create
+    result = tts.create(text, output_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 40, in create
+    audio_data = self._request_tts(chunk)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 79, in _request_tts
+    response.raise_for_status()
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\models.py", line 1028, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+2026-04-13 21:45:50,991 [INFO] scheduler: Video zur Historie hinzugefügt: 7 geheime Daytrading-Strategien für den aktuellen Markt: So profitierst du von der Volatilität 2026
+2026-04-13 21:45:50,991 [INFO] main: 📋 Video zur Historie hinzugefügt
+2026-04-14 21:20:38,148 [INFO] main: 
+============================================================
+2026-04-14 21:20:38,180 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-14 21:20:38,180 [INFO] main: ============================================================
+2026-04-14 21:20:38,180 [INFO] main: ============================================================
+2026-04-14 21:20:38,180 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-14 21:20:38,180 [INFO] main: ============================================================
+2026-04-14 21:20:38,212 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-14 21:20:39,210 [INFO] researcher: Suche trending Topic...
+2026-04-14 21:20:46,678 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-14 21:20:46,718 [INFO] researcher: Topic gefunden: 'Die besten Dividendenaktien für 2026: Passives Einkommen mit Sicherheit' (Viral-Score: 9/10)
+2026-04-14 21:20:46,718 [INFO] main:    Topic: Die besten Dividendenaktien für 2026: Passives Einkommen mit Sicherheit
+2026-04-14 21:20:46,718 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-14 21:20:47,305 [INFO] scriptwriter: Erstelle Script für: 'Die besten Dividendenaktien für 2026: Passives Einkommen mit Sicherheit'
+2026-04-14 21:20:47,777 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-14 21:20:47,777 [INFO] scriptwriter: Legal-Rules in Prompt geladen ✓
+2026-04-14 21:20:58,075 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-14 21:21:05,724 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-14 21:21:05,724 [INFO] scriptwriter: Script erstellt: '🚀 Top Dividendenaktien 2026: Sicher & Passiv!' (~8 Min.)
+2026-04-14 21:21:05,740 [INFO] main:    Script gespeichert: channels\kanal_hauptkanal\output\20260414_212038\script.json
+2026-04-14 21:21:05,740 [INFO] main: ✅ Schritt 3: Compliance-Check...
+2026-04-14 21:21:06,328 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-14 21:21:09,000 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-14 21:21:09,016 [WARNING] compliance: COMPLIANCE ISSUE: PFLICHT: Finance-Disclaimer fehlt in der Beschreibung
+2026-04-14 21:21:09,016 [INFO] compliance: COMPLIANCE WARN: Keine konkreten Kauf- oder Verkaufsempfehlungen gegeben, aber der Inhalt könnte als solche interpretiert werden, da er spezifische Aktienstrategien empfiehlt.
+2026-04-14 21:21:09,016 [INFO] compliance: COMPLIANCE WARN: Es fehlt der Finance-Disclaimer am Ende des Scripts.
+2026-04-14 21:21:09,016 [INFO] compliance: COMPLIANCE WARN: Impressum noch nicht ausgefüllt (config/legal_rules.json → country_specific → germany → impressum_text)
+2026-04-14 21:21:09,063 [WARNING] compliance: ❌ Compliance-Check FEHLGESCHLAGEN: 1 Issues, 3 Warnungen
+2026-04-14 21:21:09,063 [WARNING] main:    Compliance-Probleme: ['PFLICHT: Finance-Disclaimer fehlt in der Beschreibung']
+2026-04-14 21:21:09,063 [INFO] compliance: 🔧 Repariere Compliance-Probleme...
+2026-04-14 21:21:09,063 [INFO] compliance:    ✓ Impressum hinzugefügt
+2026-04-14 21:21:09,166 [INFO] main: 🎙️  Schritt 4: Voiceover-Erstellung...
+2026-04-14 21:21:09,166 [INFO] voiceover: Voiceover-Provider: fish_audio
+2026-04-14 21:21:09,400 [INFO] voiceover_fish: Fish Audio TTS: 3400 Zeichen → channels\kanal_hauptkanal\output\20260414_212038\voiceover.mp3
+2026-04-14 21:21:11,246 [ERROR] voiceover_fish: Fish Audio API Fehler 402: {"message":"Insufficient Balance","status":402}
+2026-04-14 21:21:11,246 [ERROR] main: ❌ Pipeline-Fehler: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 109, in run_pipeline
+    vo.create(script["full_text"], str(audio_path))
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover.py", line 32, in create
+    result = tts.create(text, output_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 40, in create
+    audio_data = self._request_tts(chunk)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 79, in _request_tts
+    response.raise_for_status()
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\models.py", line 1028, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+2026-04-14 21:21:11,341 [INFO] scheduler: Video zur Historie hinzugefügt: Die besten Dividendenaktien für 2026: Passives Einkommen mit Sicherheit
+2026-04-14 21:21:11,341 [INFO] main: 📋 Video zur Historie hinzugefügt
+2026-04-14 21:28:45,087 [INFO] main: 
+============================================================
+2026-04-14 21:28:45,087 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-14 21:28:45,087 [INFO] main: ============================================================
+2026-04-14 21:28:45,087 [INFO] main: ============================================================
+2026-04-14 21:28:45,087 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-14 21:28:45,087 [INFO] main: ============================================================
+2026-04-14 21:28:45,087 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-14 21:28:45,622 [INFO] main:    Topic: reddit storys
+2026-04-14 21:28:45,622 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-14 21:28:46,103 [INFO] scriptwriter: Erstelle Script für: 'reddit storys'
+2026-04-14 21:28:46,558 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-14 21:28:46,558 [INFO] scriptwriter: Legal-Rules in Prompt geladen ✓
+2026-04-14 21:28:55,340 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-14 21:29:00,460 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-14 21:29:00,464 [INFO] scriptwriter: Script erstellt: '😲 Unglaubliche Reddit Storys Entdeckt!' (~8 Min.)
+2026-04-14 21:29:00,468 [INFO] main:    Script gespeichert: channels\kanal_hauptkanal\output\20260414_212845\script.json
+2026-04-14 21:29:00,468 [INFO] main: ✅ Schritt 3: Compliance-Check...
+2026-04-14 21:29:00,946 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-14 21:29:02,100 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-14 21:29:02,100 [WARNING] compliance: COMPLIANCE ISSUE: PFLICHT: Finance-Disclaimer fehlt in der Beschreibung
+2026-04-14 21:29:02,100 [WARNING] compliance: COMPLIANCE ISSUE: KI-Disclaimer fehlt in der Beschreibung
+2026-04-14 21:29:02,100 [INFO] compliance: COMPLIANCE WARN: Impressum noch nicht ausgefüllt (config/legal_rules.json → country_specific → germany → impressum_text)
+2026-04-14 21:29:02,100 [WARNING] compliance: ❌ Compliance-Check FEHLGESCHLAGEN: 2 Issues, 1 Warnungen
+2026-04-14 21:29:02,100 [WARNING] main:    Compliance-Probleme: ['PFLICHT: Finance-Disclaimer fehlt in der Beschreibung', 'KI-Disclaimer fehlt in der Beschreibung']
+2026-04-14 21:29:02,100 [INFO] compliance: 🔧 Repariere Compliance-Probleme...
+2026-04-14 21:29:02,115 [INFO] compliance:    ✓ Impressum hinzugefügt
+2026-04-14 21:29:02,115 [INFO] main: 🎙️  Schritt 4: Voiceover-Erstellung...
+2026-04-14 21:29:02,115 [INFO] voiceover: Voiceover-Provider: fish_audio
+2026-04-14 21:29:02,288 [INFO] voiceover_fish: Fish Audio TTS: 2544 Zeichen → channels\kanal_hauptkanal\output\20260414_212845\voiceover.mp3
+2026-04-14 21:29:03,932 [ERROR] voiceover_fish: Fish Audio API Fehler 402: {"message":"Insufficient Balance","status":402}
+2026-04-14 21:29:03,932 [ERROR] main: ❌ Pipeline-Fehler: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 109, in run_pipeline
+    vo.create(script["full_text"], str(audio_path))
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover.py", line 32, in create
+    result = tts.create(text, output_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 40, in create
+    audio_data = self._request_tts(chunk)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 79, in _request_tts
+    response.raise_for_status()
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\models.py", line 1028, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+2026-04-14 21:29:03,947 [INFO] scheduler: Video zur Historie hinzugefügt: reddit storys
+2026-04-14 21:29:03,947 [INFO] main: 📋 Video zur Historie hinzugefügt

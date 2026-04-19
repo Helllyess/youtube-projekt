@@ -1,0 +1,30 @@
+# YouTube Automation v2.1 – Abhängigkeiten
+# Installation: pip install -r requirements.txt
+
+# ── KI / APIs ──────────────────────────────
+openai>=1.30.0
+requests>=2.31.0
+
+# ── YouTube Upload ─────────────────────────
+google-api-python-client>=2.120.0
+google-auth-httplib2>=0.2.0
+google-auth-oauthlib>=1.2.0
+
+# ── Voiceover ──────────────────────────────
+gtts>=2.5.0           # Kostenloses TTS (Fallback)
+pyttsx3>=2.90         # Offline TTS (optional)
+pydub>=0.25.1         # Audio-Zusammenfügen
+
+# ── Video-Erstellung ───────────────────────
+moviepy>=1.0.3        # Video-Komposition
+Pillow>=10.0.0        # Thumbnail & Bilder
+numpy>=1.24.0         # Numerische Operationen (MoviePy-Abhängigkeit)
+
+# ── Hilfsbibliotheken ──────────────────────
+python-dotenv>=1.0.0  # .env Unterstützung (optional)
+colorlog>=6.8.0       # Farbige Log-Ausgabe (optional)
+
+# ── Audio (optional, für bessere Qualität) ─
+# ffmpeg muss separat installiert werden:
+# Windows: https://ffmpeg.org/download.html
+# Dann zu PATH hinzufügen

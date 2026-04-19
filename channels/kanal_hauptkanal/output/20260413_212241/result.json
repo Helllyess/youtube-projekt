@@ -1,0 +1,11 @@
+{
+  "timestamp": "20260413_212241",
+  "status": "error",
+  "topic": "Die besten Daytrading Strategien für volatile Märkte im Jahr 2026",
+  "script_path": "channels\\kanal_hauptkanal\\output\\20260413_212241\\script.json",
+  "audio_path": null,
+  "video_path": null,
+  "thumbnail_path": null,
+  "youtube_url": null,
+  "error": "No module named 'requests'"
+}
