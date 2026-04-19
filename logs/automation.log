@@ -481,3 +481,192 @@ Traceback (most recent call last):
 requests.exceptions.HTTPError: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
 2026-04-14 21:29:03,947 [INFO] scheduler: Video zur Historie hinzugefügt: reddit storys
 2026-04-14 21:29:03,947 [INFO] main: 📋 Video zur Historie hinzugefügt
+2026-04-19 16:00:47,176 [INFO] main: 
+============================================================
+2026-04-19 16:00:47,201 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-19 16:00:47,201 [INFO] main: ============================================================
+2026-04-19 16:00:47,202 [INFO] main: ============================================================
+2026-04-19 16:00:47,202 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-19 16:00:47,202 [INFO] main: ============================================================
+2026-04-19 16:00:47,203 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-19 16:00:48,305 [INFO] researcher: Suche trending Storytelling-Topic...
+2026-04-19 16:00:58,712 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-19 16:00:58,868 [INFO] researcher: Topic gefunden: 'Die unbekannten Anfänge des Daytradings: Wie ein Einzelner die Wall Street herausforderte' (Viral-Score: 9/10)
+2026-04-19 16:00:58,868 [INFO] main:    Topic: Die unbekannten Anfänge des Daytradings: Wie ein Einzelner die Wall Street herausforderte
+2026-04-19 16:00:58,868 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-19 16:00:59,439 [INFO] scriptwriter: Erstelle Storytelling-Script für: 'Die unbekannten Anfänge des Daytradings: Wie ein Einzelner die Wall Street herausforderte'
+2026-04-19 16:00:59,914 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-19 16:00:59,914 [INFO] scriptwriter: Legal-Rules in Prompt geladen ✓
+2026-04-19 16:01:09,944 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-19 16:01:16,009 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-19 16:01:16,009 [INFO] scriptwriter: Script erstellt: '📈 Der Mann, der die Wall Street bezwang!' (~8 Min.)
+2026-04-19 16:01:16,009 [INFO] main:    Script gespeichert: channels\kanal_hauptkanal\output\20260419_160047\script.json
+2026-04-19 16:01:16,009 [INFO] main: ✅ Schritt 3: Compliance-Check...
+2026-04-19 16:01:16,540 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-19 16:01:17,821 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-19 16:01:17,821 [INFO] compliance: COMPLIANCE WARN: Impressum noch nicht ausgefüllt (config/legal_rules.json → country_specific → germany → impressum_text)
+2026-04-19 16:01:17,883 [INFO] compliance: ✅ Compliance-Check bestanden (1 Warnungen)
+2026-04-19 16:01:17,883 [INFO] main:    Compliance OK ✓
+2026-04-19 16:01:17,883 [INFO] main: 🎙️  Schritt 4: Voiceover-Erstellung...
+2026-04-19 16:01:17,914 [INFO] voiceover: Voiceover-Provider: fish_audio
+2026-04-19 16:01:19,712 [INFO] voiceover_fish: Fish Audio TTS: 3595 Zeichen → channels\kanal_hauptkanal\output\20260419_160047\voiceover.mp3
+2026-04-19 16:01:20,744 [ERROR] voiceover_fish: Fish Audio API Fehler 402: {"message":"Insufficient Balance","status":402}
+2026-04-19 16:01:20,744 [ERROR] main: ❌ Pipeline-Fehler: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 114, in run_pipeline
+    vo.create(script["full_text"], str(audio_path))
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover.py", line 32, in create
+    result = tts.create(text, output_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 40, in create
+    audio_data = self._request_tts(chunk)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 79, in _request_tts
+    response.raise_for_status()
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\models.py", line 1028, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+2026-04-19 16:01:20,836 [INFO] scheduler: Video zur Historie hinzugefügt: Die unbekannten Anfänge des Daytradings: Wie ein Einzelner die Wall Street herausforderte
+2026-04-19 16:01:20,836 [INFO] main: 📋 Video zur Historie hinzugefügt
+2026-04-19 16:01:28,899 [INFO] main: 
+============================================================
+2026-04-19 16:01:28,915 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-19 16:01:28,915 [INFO] main: ============================================================
+2026-04-19 16:01:28,915 [INFO] main: ============================================================
+2026-04-19 16:01:28,915 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-19 16:01:28,915 [INFO] main: ============================================================
+2026-04-19 16:01:28,915 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-19 16:01:29,819 [INFO] main:    Topic: Der Aufstieg und Fall von Napoleon Bonaparte
+2026-04-19 16:01:29,819 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-19 16:01:30,342 [INFO] scriptwriter: Erstelle Storytelling-Script für: 'Der Aufstieg und Fall von Napoleon Bonaparte'
+2026-04-19 16:01:30,880 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-19 16:01:30,880 [INFO] scriptwriter: Legal-Rules in Prompt geladen ✓
+2026-04-19 16:01:46,166 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-19 16:01:49,855 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-19 16:01:49,858 [INFO] scriptwriter: Script erstellt: '🌍 Napoleons Aufstieg & Fall: Ein Imperium in Flammen!' (~8 Min.)
+2026-04-19 16:01:49,860 [INFO] main:    Script gespeichert: channels\kanal_hauptkanal\output\20260419_160128\script.json
+2026-04-19 16:01:49,860 [INFO] main: ✅ Schritt 3: Compliance-Check...
+2026-04-19 16:01:50,315 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-19 16:01:51,109 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-19 16:01:51,112 [WARNING] compliance: COMPLIANCE ISSUE: KI-Disclaimer fehlt in der Beschreibung
+2026-04-19 16:01:51,113 [INFO] compliance: COMPLIANCE WARN: Impressum noch nicht ausgefüllt (config/legal_rules.json → country_specific → germany → impressum_text)
+2026-04-19 16:01:51,114 [WARNING] compliance: ❌ Compliance-Check FEHLGESCHLAGEN: 1 Issues, 1 Warnungen
+2026-04-19 16:01:51,114 [WARNING] main:    Compliance-Probleme: ['KI-Disclaimer fehlt in der Beschreibung']
+2026-04-19 16:01:51,114 [INFO] compliance: 🔧 Repariere Compliance-Probleme...
+2026-04-19 16:01:51,118 [INFO] compliance:    ✓ Impressum hinzugefügt
+2026-04-19 16:01:51,118 [INFO] main: 🎙️  Schritt 4: Voiceover-Erstellung...
+2026-04-19 16:01:51,118 [INFO] voiceover: Voiceover-Provider: fish_audio
+2026-04-19 16:01:52,291 [INFO] voiceover_fish: Fish Audio TTS: 3749 Zeichen → channels\kanal_hauptkanal\output\20260419_160128\voiceover.mp3
+2026-04-19 16:01:53,628 [ERROR] voiceover_fish: Fish Audio API Fehler 402: {"message":"Insufficient Balance","status":402}
+2026-04-19 16:01:53,628 [ERROR] main: ❌ Pipeline-Fehler: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 114, in run_pipeline
+    vo.create(script["full_text"], str(audio_path))
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover.py", line 32, in create
+    result = tts.create(text, output_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 40, in create
+    audio_data = self._request_tts(chunk)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 79, in _request_tts
+    response.raise_for_status()
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\models.py", line 1028, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+2026-04-19 16:01:53,649 [INFO] scheduler: Video zur Historie hinzugefügt: Der Aufstieg und Fall von Napoleon Bonaparte
+2026-04-19 16:01:53,649 [INFO] main: 📋 Video zur Historie hinzugefügt
+2026-04-19 16:02:04,711 [INFO] main: 
+============================================================
+2026-04-19 16:02:04,711 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-19 16:02:04,711 [INFO] main: ============================================================
+2026-04-19 16:02:04,711 [INFO] main: ============================================================
+2026-04-19 16:02:04,711 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-19 16:02:04,711 [INFO] main: ============================================================
+2026-04-19 16:02:04,727 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-19 16:02:05,233 [INFO] main:    Topic: Die verrücktesten Weltrekorde der Geschichte
+2026-04-19 16:02:05,233 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-19 16:02:05,664 [INFO] scriptwriter: Erstelle Storytelling-Script für: 'Die verrücktesten Weltrekorde der Geschichte'
+2026-04-19 16:02:06,102 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-19 16:02:06,102 [INFO] scriptwriter: Legal-Rules in Prompt geladen ✓
+2026-04-19 16:02:21,368 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-19 16:02:26,055 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-19 16:02:26,055 [INFO] scriptwriter: Script erstellt: '😱 Unglaublich! Die verrücktesten Weltrekorde 🌍' (~8 Min.)
+2026-04-19 16:02:26,055 [INFO] main:    Script gespeichert: channels\kanal_hauptkanal\output\20260419_160204\script.json
+2026-04-19 16:02:26,055 [INFO] main: ✅ Schritt 3: Compliance-Check...
+2026-04-19 16:02:26,508 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-19 16:02:28,320 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-19 16:02:28,320 [WARNING] compliance: COMPLIANCE ISSUE: KI-Disclaimer fehlt in der Beschreibung
+2026-04-19 16:02:28,320 [INFO] compliance: COMPLIANCE WARN: Impressum noch nicht ausgefüllt (config/legal_rules.json → country_specific → germany → impressum_text)
+2026-04-19 16:02:28,320 [WARNING] compliance: ❌ Compliance-Check FEHLGESCHLAGEN: 1 Issues, 1 Warnungen
+2026-04-19 16:02:28,320 [WARNING] main:    Compliance-Probleme: ['KI-Disclaimer fehlt in der Beschreibung']
+2026-04-19 16:02:28,320 [INFO] compliance: 🔧 Repariere Compliance-Probleme...
+2026-04-19 16:02:28,320 [INFO] compliance:    ✓ Impressum hinzugefügt
+2026-04-19 16:02:28,320 [INFO] main: 🎙️  Schritt 4: Voiceover-Erstellung...
+2026-04-19 16:02:28,320 [INFO] voiceover: Voiceover-Provider: fish_audio
+2026-04-19 16:02:28,477 [INFO] voiceover_fish: Fish Audio TTS: 4048 Zeichen → channels\kanal_hauptkanal\output\20260419_160204\voiceover.mp3
+2026-04-19 16:02:29,837 [ERROR] voiceover_fish: Fish Audio API Fehler 402: {"message":"Insufficient Balance","status":402}
+2026-04-19 16:02:29,837 [ERROR] main: ❌ Pipeline-Fehler: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 114, in run_pipeline
+    vo.create(script["full_text"], str(audio_path))
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover.py", line 32, in create
+    result = tts.create(text, output_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 40, in create
+    audio_data = self._request_tts(chunk)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 79, in _request_tts
+    response.raise_for_status()
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\models.py", line 1028, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+2026-04-19 16:02:29,853 [INFO] scheduler: Video zur Historie hinzugefügt: Die verrücktesten Weltrekorde der Geschichte
+2026-04-19 16:02:29,853 [INFO] main: 📋 Video zur Historie hinzugefügt
+2026-04-19 16:02:37,228 [INFO] main: 
+============================================================
+2026-04-19 16:02:37,228 [INFO] main: KANAL: Mein Hauptkanal
+2026-04-19 16:02:37,228 [INFO] main: ============================================================
+2026-04-19 16:02:37,228 [INFO] main: ============================================================
+2026-04-19 16:02:37,228 [INFO] main: YouTube Automation v2.1 gestartet
+2026-04-19 16:02:37,228 [INFO] main: ============================================================
+2026-04-19 16:02:37,228 [INFO] main: 📊 Schritt 1: Topic-Recherche...
+2026-04-19 16:02:37,727 [INFO] main:    Topic: Das Geheimnis der verschwundenen Maya-Zivilisation
+2026-04-19 16:02:37,727 [INFO] main: ✍️  Schritt 2: Script-Erstellung...
+2026-04-19 16:02:38,164 [INFO] scriptwriter: Erstelle Storytelling-Script für: 'Das Geheimnis der verschwundenen Maya-Zivilisation'
+2026-04-19 16:02:38,602 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-19 16:02:38,602 [INFO] scriptwriter: Legal-Rules in Prompt geladen ✓
+2026-04-19 16:02:50,414 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-19 16:02:56,789 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-19 16:02:56,789 [INFO] scriptwriter: Script erstellt: '😱 Das Geheimnis der verschwundenen Maya-Zivilisation!' (~8 Min.)
+2026-04-19 16:02:56,789 [INFO] main:    Script gespeichert: channels\kanal_hauptkanal\output\20260419_160237\script.json
+2026-04-19 16:02:56,789 [INFO] main: ✅ Schritt 3: Compliance-Check...
+2026-04-19 16:02:57,242 [INFO] compliance: Legal-Rules geladen: C:\Users\AminF\Desktop\youtube-automation\config\legal_rules.json
+2026-04-19 16:02:58,180 [INFO] httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-19 16:02:58,180 [WARNING] compliance: COMPLIANCE ISSUE: KI-Disclaimer fehlt in der Beschreibung
+2026-04-19 16:02:58,180 [INFO] compliance: COMPLIANCE WARN: Verbotenes Wort im Titel: 'GEHEIM'
+2026-04-19 16:02:58,180 [INFO] compliance: COMPLIANCE WARN: Impressum noch nicht ausgefüllt (config/legal_rules.json → country_specific → germany → impressum_text)
+2026-04-19 16:02:58,180 [WARNING] compliance: ❌ Compliance-Check FEHLGESCHLAGEN: 1 Issues, 2 Warnungen
+2026-04-19 16:02:58,180 [WARNING] main:    Compliance-Probleme: ['KI-Disclaimer fehlt in der Beschreibung']
+2026-04-19 16:02:58,180 [INFO] compliance: 🔧 Repariere Compliance-Probleme...
+2026-04-19 16:02:58,196 [INFO] compliance:    ✓ Impressum hinzugefügt
+2026-04-19 16:02:58,196 [INFO] main: 🎙️  Schritt 4: Voiceover-Erstellung...
+2026-04-19 16:02:58,197 [INFO] voiceover: Voiceover-Provider: fish_audio
+2026-04-19 16:02:58,352 [INFO] voiceover_fish: Fish Audio TTS: 3441 Zeichen → channels\kanal_hauptkanal\output\20260419_160237\voiceover.mp3
+2026-04-19 16:02:59,728 [ERROR] voiceover_fish: Fish Audio API Fehler 402: {"message":"Insufficient Balance","status":402}
+2026-04-19 16:02:59,729 [ERROR] main: ❌ Pipeline-Fehler: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+Traceback (most recent call last):
+  File "C:\Users\AminF\Desktop\youtube-automation\main.py", line 114, in run_pipeline
+    vo.create(script["full_text"], str(audio_path))
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover.py", line 32, in create
+    result = tts.create(text, output_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 40, in create
+    audio_data = self._request_tts(chunk)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AminF\Desktop\youtube-automation\voiceover_fish.py", line 79, in _request_tts
+    response.raise_for_status()
+  File "C:\Users\AminF\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\models.py", line 1028, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 402 Client Error: Payment Required for url: https://api.fish.audio/v1/tts
+2026-04-19 16:02:59,743 [INFO] scheduler: Video zur Historie hinzugefügt: Das Geheimnis der verschwundenen Maya-Zivilisation
+2026-04-19 16:02:59,743 [INFO] main: 📋 Video zur Historie hinzugefügt
