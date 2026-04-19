@@ -42,10 +42,10 @@ C = {  # Farben
 }
 
 PIPELINE = [
-    ("📊", "Recherche",   "researcher.py",    "Trending Topics finden"),
-    ("✍️",  "Script",     "scriptwriter.py",  "Video-Script mit GPT-4o"),
+    ("📖", "Recherche",   "researcher.py",    "Story-Topics finden"),
+    ("✍️",  "Script",     "scriptwriter.py",  "Story-Script mit GPT-4o"),
     ("✅",  "Compliance", "compliance.py",    "Richtlinien-Check"),
-    ("🎙️", "Voiceover",  "voiceover.py",     "Sprache generieren"),
+    ("🎙️", "Voiceover",  "voiceover.py",     "Erzähler-Stimme generieren"),
     ("🖼️", "Thumbnail",  "thumbnail.py",     "Vorschaubild erstellen"),
     ("🎬",  "Video",      "video_creator.py", "Video zusammenstellen"),
     ("🚀",  "Upload",     "uploader.py",      "YouTube hochladen"),
@@ -55,25 +55,25 @@ PIPELINE = [
 ANIMATION_STYLES = {
     "minimal": {
         "name": "Minimal / Clean",
-        "desc": "Schwarzer Hintergrund, weißer Text.\nKlare Sektions-Titel, keine Ablenkung.\nPerfekt für seriösen Finance-Content.",
+        "desc": "Schwarzer Hintergrund, weißer Text.\nKlare Kapitel-Titel, keine Ablenkung.\nPerfekt für seriöse Dokumentationen.",
         "preview": "⬛  Text pur auf dunklem Hintergrund",
         "bg_color": [10, 10, 20],
         "font_size": 60,
         "text_color": "white",
         "accent_color": "#FFFFFF",
     },
-    "trading_terminal": {
-        "name": "Trading Terminal",
-        "desc": "Grüne Schrift auf Schwarz wie ein Terminal.\nChart-Linien im Hintergrund.\nRetro-Hacker-Look für Trader.",
-        "preview": "🟩  Grüner Terminal-Text + Chart-Linien",
-        "bg_color": [0, 5, 0],
-        "font_size": 55,
-        "text_color": "#00FF88",
-        "accent_color": "#00FF88",
+    "story_amber": {
+        "name": "Story Amber",
+        "desc": "Warmes Amber auf Dunkel – wie ein altes Buch.\nPerfekt für Geschichte und Biographien.\nErzeugt nostalgische Atmosphäre.",
+        "preview": "🟠  Amber-Text auf warmem Dunkel",
+        "bg_color": [15, 10, 5],
+        "font_size": 58,
+        "text_color": "#F59E0B",
+        "accent_color": "#D97706",
     },
     "premium_gold": {
         "name": "Premium Gold",
-        "desc": "Dunkler Hintergrund mit goldenen Akzenten.\nWertiger Look für hochpreisigen Content.\nIdeal für Vermögensaufbau-Videos.",
+        "desc": "Dunkler Hintergrund mit goldenen Akzenten.\nWertiger, epischer Look.\nIdeal für Biographien und Drama.",
         "preview": "🟡  Gold-Text auf dunklem Blau",
         "bg_color": [10, 10, 30],
         "font_size": 62,
@@ -82,58 +82,58 @@ ANIMATION_STYLES = {
     },
     "neon_blue": {
         "name": "Neon Blue",
-        "desc": "Leuchtende blaue Akzente.\nModerner Tech-Look.\nFür Krypto und FinTech.",
+        "desc": "Leuchtende blaue Akzente.\nModerner Sci-Fi-Look.\nFür Tech, Science und Mystery.",
         "preview": "🔵  Neon-Blau auf Dunkel",
         "bg_color": [5, 5, 20],
         "font_size": 58,
         "text_color": "#60A5FA",
         "accent_color": "#3B82F6",
     },
-    "red_alert": {
-        "name": "Red Alert / Crash",
-        "desc": "Rote Akzente, dramatischer Look.\nPerfekt für Crash-Warnungen,\nMarkt-Analysen und Breaking News.",
-        "preview": "🔴  Rot auf Schwarz – Alarmstufe!",
-        "bg_color": [20, 5, 5],
-        "font_size": 60,
-        "text_color": "#FF6B6B",
-        "accent_color": "#EF4444",
+    "brainrot": {
+        "name": "Brainrot / Chaos",
+        "desc": "Knallige Farben, maximaler Chaos-Look.\nPerfekt für Brainrot und Comedy-Content.\nHält ADHS-Zuschauer bei der Stange.",
+        "preview": "🌈  Bunt, laut, überwältigend!",
+        "bg_color": [5, 0, 15],
+        "font_size": 64,
+        "text_color": "#FF6BFF",
+        "accent_color": "#A855F7",
     },
 }
 
 # ── Stimmen-Bibliothek ──────────────────────────────────────────
 VOICES = {
     "54a5170264694bfc8e9ad98df7bd89c3": {
-        "name": "Standard DE (Männlich)",
+        "name": "Erzähler DE (Männlich)",
         "lang": "🇩🇪 Deutsch",
-        "desc": "Klare, professionelle Stimme.\nGut für Finance-Content.",
+        "desc": "Klare, professionelle Stimme.\nIdeal für Dokumentationen und Geschichte.",
         "gender": "♂",
         "style": "Sachlich",
     },
     "d7a641feef2e46b4aece4d7d04f009e9": {
-        "name": "Energisch DE (Männlich)",
+        "name": "Dramatisch DE (Männlich)",
         "lang": "🇩🇪 Deutsch",
-        "desc": "Dynamisch und motivierend.\nIdeal für actionreiche Topics.",
+        "desc": "Dynamisch und dramatisch.\nIdeal für spannungsgeladene Storys.",
         "gender": "♂",
         "style": "Energisch",
     },
     "a0e99c3ad8a04e1fb3e0d84d2a27b430": {
-        "name": "Ruhig DE (Weiblich)",
+        "name": "Sanft DE (Weiblich)",
         "lang": "🇩🇪 Deutsch",
-        "desc": "Sanfte, vertrauenswürdige Stimme.\nGut für Erklärvideos.",
+        "desc": "Sanfte, vertrauenswürdige Stimme.\nGut für Biographien und Feelgood-Storys.",
         "gender": "♀",
         "style": "Ruhig",
     },
     "7f92f8afb8ec43bf81429cc1c9199cb1": {
-        "name": "Standard EN (Male)",
+        "name": "Narrator EN (Male)",
         "lang": "🇬🇧 English",
-        "desc": "Professional, clear voice.\nGreat for international content.",
+        "desc": "Professional, clear voice.\nGreat for documentary narration.",
         "gender": "♂",
         "style": "Professional",
     },
     "e58b0d7efca34b2a9cf07b3e0eaaec3c": {
-        "name": "Confident EN (Male)",
+        "name": "Epic EN (Male)",
         "lang": "🇬🇧 English",
-        "desc": "Deep, authoritative voice.\nPerfect for finance narration.",
+        "desc": "Deep, authoritative voice.\nPerfect for history and epic stories.",
         "gender": "♂",
         "style": "Authoritative",
     },
@@ -157,7 +157,7 @@ class App(ctk.CTk):
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
         self.configure(fg_color=C["bg"])
-        self.title("YouTube Automation v2.1")
+        self.title("YouTube Automation v2.1 – Storytelling Edition")
         self.geometry("1360x860")
         self.minsize(1100, 700)
 
@@ -262,6 +262,7 @@ class App(ctk.CTk):
             ("✨", "Vorschläge"),
             ("📹", "Videos"),
             ("📅", "Planer"),
+            ("📖", "Story-Planer"),
             ("🎨", "Design"),
             ("🎙️", "Stimmen"),
             ("⚖️", "Regeln"),
@@ -282,7 +283,7 @@ class App(ctk.CTk):
             self.nav_btns[label] = btn
 
         # Version info am Ende der Sidebar
-        ctk.CTkLabel(sidebar, text="v2.1 • Finance Edition",
+        ctk.CTkLabel(sidebar, text="v2.1 • Storytelling Edition",
                      font=ctk.CTkFont(size=10),
                      text_color=C["border"]).pack(side="bottom", pady=10)
 
@@ -295,6 +296,7 @@ class App(ctk.CTk):
         self._build_page_suggestions()
         self._build_page_videos()
         self._build_page_planner()
+        self._build_page_story_planer()
         self._build_page_design()
         self._build_page_voices()
         self._build_page_rules()
@@ -675,16 +677,15 @@ class App(ctk.CTk):
         nrow = ctk.CTkFrame(n_card, fg_color="transparent")
         nrow.pack(fill="x", padx=16, pady=10)
 
-        self.sugg_niche_var = ctk.StringVar(value=self.settings.get("channel", {}).get("niche", "finance_daytrading"))
+        self.sugg_niche_var = ctk.StringVar(value=self.settings.get("channel", {}).get("niche", "storytelling"))
         ctk.CTkLabel(nrow, text="Nische:", font=ctk.CTkFont(size=12),
                      text_color=C["muted"]).pack(side="left")
         niche_menu = ctk.CTkOptionMenu(nrow, variable=self.sugg_niche_var,
                                        values=[
-                                           "finance_daytrading", "finance_investing", "crypto",
-                                           "personal_finance", "business", "tech", "ai_tools",
-                                           "productivity", "motivation", "health_fitness",
-                                           "travel", "gaming", "education", "science", "history",
-                                           "cooking", "lifestyle", "psychology", "custom",
+                                           "storytelling", "history", "biography", "documentary",
+                                           "mystery", "crime", "comedy", "brainrot", "science",
+                                           "travel", "gaming", "education", "motivation",
+                                           "health_fitness", "tech", "ai_tools", "custom",
                                        ],
                                        fg_color=C["input"], button_color=C["accent"],
                                        dropdown_fg_color=C["card"], width=220,
@@ -1154,9 +1155,9 @@ class App(ctk.CTk):
                                           border_color=C["border"], border_width=1,
                                           font=ctk.CTkFont(size=12), corner_radius=6)
         self.batch_text.pack(fill="x", padx=16, pady=4)
-        self.batch_text.insert("1.0", "Daytrading Strategien für Anfänger\n"
-                                       "Die 5 größten Trading-Fehler\n"
-                                       "Technische Analyse einfach erklärt")
+        self.batch_text.insert("1.0", "Der Aufstieg und Fall von Napoleon Bonaparte\n"
+                                       "Die verrücktesten Weltrekorde der Geschichte\n"
+                                       "Das Geheimnis der verschwundenen Maya-Zivilisation")
 
         # Optionen
         opt_row = ctk.CTkFrame(batch_card, fg_color="transparent")
@@ -1488,6 +1489,296 @@ class App(ctk.CTk):
     def _load_queue(self) -> list:
         schedule = self._load_schedule()
         return sorted(schedule.get("queue", []), key=lambda x: x.get("scheduled_date", ""))
+
+    # ═════════════════════════════════════════════════════════════
+    # SEITE 5b: STORY-PLANER (5-Schritt-Workflow)
+    # ═════════════════════════════════════════════════════════════
+
+    def _build_page_story_planer(self):
+        page = ctk.CTkFrame(self.content, fg_color="transparent")
+        self.pages["Story-Planer"] = page
+
+        scroll = ctk.CTkScrollableFrame(page, fg_color="transparent")
+        scroll.pack(fill="both", expand=True, padx=16, pady=12)
+
+        ctk.CTkLabel(scroll, text="📖  Story-Planer",
+                     font=ctk.CTkFont(size=16, weight="bold"),
+                     text_color=C["text"]).pack(anchor="w", pady=(0, 2))
+        ctk.CTkLabel(scroll,
+                     text="Thema eingeben → Ideen recherchieren → Auswählen → Plan erstellen → Produzieren",
+                     font=ctk.CTkFont(size=12), text_color=C["muted"],
+                     wraplength=800).pack(anchor="w", pady=(0, 14))
+
+        # ── Schritt 1: Thema ──────────────────────────────────────
+        s1 = self._card_in(scroll, "① Thema & Story-Recherche")
+
+        theme_row = ctk.CTkFrame(s1, fg_color="transparent")
+        theme_row.pack(fill="x", padx=16, pady=(10, 6))
+
+        ctk.CTkLabel(theme_row, text="Thema:",
+                     font=ctk.CTkFont(size=12), text_color=C["muted"]).pack(side="left")
+        self.sp_theme_entry = ctk.CTkEntry(
+            theme_row, placeholder_text="z.B. Geschichte, Biographien, Brainrot, Comedy...",
+            fg_color=C["input"], border_color=C["border"],
+            width=340, font=ctk.CTkFont(size=12))
+        self.sp_theme_entry.pack(side="left", padx=10)
+
+        count_row = ctk.CTkFrame(s1, fg_color="transparent")
+        count_row.pack(fill="x", padx=16, pady=(0, 6))
+        ctk.CTkLabel(count_row, text="Anzahl Ideen:",
+                     font=ctk.CTkFont(size=12), text_color=C["muted"]).pack(side="left")
+        self.sp_count_var = ctk.StringVar(value="10")
+        ctk.CTkOptionMenu(count_row, variable=self.sp_count_var,
+                          values=["5", "8", "10", "14", "20"],
+                          fg_color=C["input"], button_color=C["accent"],
+                          dropdown_fg_color=C["card"], width=80,
+                          font=ctk.CTkFont(size=11)).pack(side="left", padx=8)
+
+        self.sp_research_btn = ctk.CTkButton(
+            s1, text="🔍  Story-Ideen recherchieren",
+            font=ctk.CTkFont(size=13, weight="bold"), height=40,
+            fg_color=C["purple"], hover_color="#7C3AED",
+            corner_radius=8, command=self._sp_research)
+        self.sp_research_btn.pack(fill="x", padx=16, pady=(4, 12))
+
+        # ── Schritt 2: Ideen-Liste & Auswahl ──────────────────────
+        s2 = self._card_in(scroll, "② Ideen auswählen")
+        ctk.CTkLabel(s2, text="Haken setzen bei den Storys die produziert werden sollen:",
+                     font=ctk.CTkFont(size=11), text_color=C["muted"]).pack(
+            anchor="w", padx=16, pady=(8, 4))
+
+        self.sp_ideas_frame = ctk.CTkScrollableFrame(s2, fg_color="transparent", height=260)
+        self.sp_ideas_frame.pack(fill="x", padx=16, pady=(0, 8))
+        self.sp_idea_vars = []
+
+        ctk.CTkLabel(s2, text="Noch keine Ideen recherchiert – Schritt ① zuerst.",
+                     font=ctk.CTkFont(size=11), text_color=C["muted"]).pack(
+            anchor="w", padx=16, pady=(0, 10))
+
+        # ── Schritt 3: Einstellungen ───────────────────────────────
+        s3 = self._card_in(scroll, "③ Kanal, Zeitraum & Video-Länge")
+        cfg = ctk.CTkFrame(s3, fg_color="transparent")
+        cfg.pack(fill="x", padx=16, pady=10)
+
+        # Kanal
+        ctk.CTkLabel(cfg, text="Kanal:", font=ctk.CTkFont(size=12),
+                     text_color=C["muted"]).grid(row=0, column=0, sticky="w", pady=4)
+        self.sp_channel_var = ctk.StringVar(value="Standard")
+        self.sp_ch_menu = ctk.CTkOptionMenu(cfg, variable=self.sp_channel_var,
+                                             values=self._get_channel_options(),
+                                             fg_color=C["input"], button_color=C["accent"],
+                                             dropdown_fg_color=C["card"], width=180,
+                                             font=ctk.CTkFont(size=11))
+        self.sp_ch_menu.grid(row=0, column=1, sticky="w", padx=10, pady=4)
+
+        # Startdatum
+        ctk.CTkLabel(cfg, text="Start:", font=ctk.CTkFont(size=12),
+                     text_color=C["muted"]).grid(row=1, column=0, sticky="w", pady=4)
+        self.sp_start_entry = ctk.CTkEntry(cfg, placeholder_text="YYYY-MM-DD",
+                                            fg_color=C["input"], border_color=C["border"],
+                                            width=140, font=ctk.CTkFont(size=11))
+        self.sp_start_entry.insert(0, datetime.now().strftime("%Y-%m-%d"))
+        self.sp_start_entry.grid(row=1, column=1, sticky="w", padx=10, pady=4)
+
+        # Enddatum
+        ctk.CTkLabel(cfg, text="Ende:", font=ctk.CTkFont(size=12),
+                     text_color=C["muted"]).grid(row=2, column=0, sticky="w", pady=4)
+        self.sp_end_entry = ctk.CTkEntry(cfg, placeholder_text="YYYY-MM-DD",
+                                          fg_color=C["input"], border_color=C["border"],
+                                          width=140, font=ctk.CTkFont(size=11))
+        end_default = (datetime.now() + __import__("datetime").timedelta(days=30)).strftime("%Y-%m-%d")
+        self.sp_end_entry.insert(0, end_default)
+        self.sp_end_entry.grid(row=2, column=1, sticky="w", padx=10, pady=4)
+
+        # Video-Länge
+        ctk.CTkLabel(cfg, text="Video-Länge (Min.):", font=ctk.CTkFont(size=12),
+                     text_color=C["muted"]).grid(row=3, column=0, sticky="w", pady=4)
+        self.sp_duration_var = ctk.StringVar(value="10")
+        ctk.CTkOptionMenu(cfg, variable=self.sp_duration_var,
+                          values=["5", "8", "10", "12", "15", "20"],
+                          fg_color=C["input"], button_color=C["accent"],
+                          dropdown_fg_color=C["card"], width=100,
+                          font=ctk.CTkFont(size=11)).grid(row=3, column=1, sticky="w", padx=10, pady=4)
+
+        # Posts pro Woche
+        ctk.CTkLabel(cfg, text="Videos pro Woche:", font=ctk.CTkFont(size=12),
+                     text_color=C["muted"]).grid(row=4, column=0, sticky="w", pady=4)
+        self.sp_ppw_var = ctk.StringVar(value="3")
+        ctk.CTkOptionMenu(cfg, variable=self.sp_ppw_var,
+                          values=["1", "2", "3", "4", "5", "7"],
+                          fg_color=C["input"], button_color=C["accent"],
+                          dropdown_fg_color=C["card"], width=80,
+                          font=ctk.CTkFont(size=11)).grid(row=4, column=1, sticky="w", padx=10, pady=4)
+
+        # Nur erstellen
+        self.sp_dryrun_var = ctk.BooleanVar(value=True)
+        ctk.CTkSwitch(s3, text="Nur erstellen (kein Upload)",
+                      variable=self.sp_dryrun_var,
+                      font=ctk.CTkFont(size=11), text_color=C["muted"],
+                      button_color=C["gold"], progress_color=C["gold"]).pack(
+            anchor="w", padx=16, pady=(0, 10))
+
+        # ── Schritt 4: Plan erstellen ──────────────────────────────
+        s4 = self._card_in(scroll, "④ Posting-Plan erstellen")
+        self.sp_plan_btn = ctk.CTkButton(
+            s4, text="📅  Posting-Plan erstellen",
+            font=ctk.CTkFont(size=13, weight="bold"), height=40,
+            fg_color=C["accent"], hover_color=C["accent_h"],
+            corner_radius=8, command=self._sp_create_plan)
+        self.sp_plan_btn.pack(fill="x", padx=16, pady=(10, 6))
+
+        self.sp_plan_display = ctk.CTkFrame(s4, fg_color="transparent")
+        self.sp_plan_display.pack(fill="x", padx=16, pady=(0, 10))
+
+        # ── Schritt 5: Produktion starten ─────────────────────────
+        s5 = self._card_in(scroll, "⑤ Videos produzieren")
+        self.sp_produce_btn = ctk.CTkButton(
+            s5, text="🚀  ALLE VIDEOS PRODUZIEREN",
+            font=ctk.CTkFont(size=14, weight="bold"), height=48,
+            fg_color=C["green"], hover_color="#059669",
+            corner_radius=10, command=self._sp_execute_plan)
+        self.sp_produce_btn.pack(fill="x", padx=16, pady=(10, 6))
+
+        self.sp_progress_label = ctk.CTkLabel(
+            s5, text="Noch kein Plan erstellt.",
+            font=ctk.CTkFont(size=11), text_color=C["muted"])
+        self.sp_progress_label.pack(anchor="w", padx=16, pady=(0, 10))
+
+        self._sp_plan_data = []
+
+    # ── Story-Planer Logik ────────────────────────────────────────
+
+    def _sp_research(self):
+        theme = self.sp_theme_entry.get().strip()
+        if not theme:
+            self._log("⚠️ Bitte zuerst ein Thema eingeben.")
+            return
+        count = int(self.sp_count_var.get())
+        self.sp_research_btn.configure(state="disabled", text="⏳ Recherchiere...")
+
+        def do_research():
+            try:
+                from planner import StoryPlanner
+                planner = StoryPlanner(self.settings)
+                ideas = planner.research_story_ideas(theme, count)
+                self.after(0, lambda: self._sp_render_ideas(ideas))
+                self.after(0, lambda: self._log(f"✅ {len(ideas)} Story-Ideen zu '{theme}' gefunden"))
+            except Exception as e:
+                self.after(0, lambda: self._log(f"❌ Recherche-Fehler: {e}"))
+            finally:
+                self.after(0, lambda: self.sp_research_btn.configure(
+                    state="normal", text="🔍  Story-Ideen recherchieren"))
+
+        threading.Thread(target=do_research, daemon=True).start()
+
+    def _sp_render_ideas(self, ideas: list):
+        for w in self.sp_ideas_frame.winfo_children():
+            w.destroy()
+        self.sp_idea_vars = []
+
+        for idea in ideas:
+            var = ctk.BooleanVar(value=True)
+            row = ctk.CTkFrame(self.sp_ideas_frame, fg_color=C["card"],
+                               corner_radius=6, border_width=1, border_color=C["border"])
+            row.pack(fill="x", pady=2)
+
+            ctk.CTkCheckBox(row, text="", variable=var,
+                            fg_color=C["accent"], width=24).pack(side="left", padx=8, pady=6)
+            mid = ctk.CTkFrame(row, fg_color="transparent")
+            mid.pack(side="left", fill="both", expand=True, pady=4)
+            ctk.CTkLabel(mid, text=idea.get("title", "?"),
+                         font=ctk.CTkFont(size=12, weight="bold"),
+                         text_color=C["text"], anchor="w").pack(anchor="w")
+            if idea.get("desc"):
+                ctk.CTkLabel(mid, text=idea["desc"],
+                             font=ctk.CTkFont(size=10), text_color=C["muted"],
+                             anchor="w", wraplength=600).pack(anchor="w")
+
+            type_badge = idea.get("content_type", "story")
+            ctk.CTkLabel(row, text=f"[{type_badge}]",
+                         font=ctk.CTkFont(size=10), text_color=C["purple"]).pack(
+                side="right", padx=8)
+
+            self.sp_idea_vars.append((var, idea))
+
+    def _sp_create_plan(self):
+        selected = [idea for var, idea in self.sp_idea_vars if var.get()]
+        if not selected:
+            self._log("⚠️ Keine Ideen ausgewählt.")
+            return
+
+        try:
+            from planner import StoryPlanner
+            planner = StoryPlanner(self.settings)
+            plan = planner.create_posting_plan(
+                selected_ideas=selected,
+                channel=self.sp_channel_var.get(),
+                start_date=self.sp_start_entry.get().strip(),
+                end_date=self.sp_end_entry.get().strip(),
+                duration_minutes=int(self.sp_duration_var.get()),
+                posts_per_week=int(self.sp_ppw_var.get()),
+            )
+            self._sp_plan_data = plan
+            self._sp_render_plan(plan)
+            self._log(f"📅 Plan erstellt: {len(plan)} Videos eingeplant")
+        except Exception as e:
+            self._log(f"❌ Plan-Fehler: {e}")
+
+    def _sp_render_plan(self, plan: list):
+        for w in self.sp_plan_display.winfo_children():
+            w.destroy()
+        for entry in plan:
+            row = ctk.CTkFrame(self.sp_plan_display, fg_color=C["card"],
+                               corner_radius=6, border_width=1, border_color=C["border"])
+            row.pack(fill="x", pady=2)
+            date_lbl = ctk.CTkLabel(row, text=entry.get("scheduled_date", "?")[:16],
+                                     font=ctk.CTkFont(size=11, weight="bold"),
+                                     text_color=C["cyan"], width=130, anchor="w")
+            date_lbl.pack(side="left", padx=10, pady=6)
+            ctk.CTkLabel(row, text=entry.get("title", "?"),
+                         font=ctk.CTkFont(size=11), text_color=C["text"],
+                         anchor="w").pack(side="left", fill="x", expand=True)
+            ctk.CTkLabel(row, text=f"{entry.get('duration_minutes', 10)} Min.",
+                         font=ctk.CTkFont(size=10), text_color=C["muted"]).pack(
+                side="right", padx=10)
+
+    def _sp_execute_plan(self):
+        if not self._sp_plan_data:
+            self._log("⚠️ Erst Schritt ④ ausführen – Plan erstellen.")
+            return
+        if self.running:
+            self._log("⚠️ Pipeline läuft bereits.")
+            return
+
+        dry_run = self.sp_dryrun_var.get()
+        plan = self._sp_plan_data
+        total = len(plan)
+        self._set_running(True)
+        self.sp_produce_btn.configure(state="disabled")
+        self.sp_progress_label.configure(text=f"Starte Produktion: 0/{total} Videos...")
+
+        def do_execute():
+            try:
+                from planner import StoryPlanner
+                planner = StoryPlanner(self.settings)
+
+                def on_progress(i, t, entry):
+                    self.after(0, lambda: self.sp_progress_label.configure(
+                        text=f"Produziere {i+1}/{t}: {entry['title'][:50]}..."))
+                    self.after(0, lambda: self._log(f"🎬 [{i+1}/{t}] {entry['title']}"))
+
+                result_plan = planner.execute_plan(plan, dry_run=dry_run, on_progress=on_progress)
+                done = sum(1 for e in result_plan if e.get("status") == "done")
+                self.after(0, lambda: self.sp_progress_label.configure(
+                    text=f"✅ Fertig: {done}/{total} Videos produziert"))
+                self.after(0, lambda: self._log(f"✅ Story-Plan abgeschlossen: {done}/{total} erfolgreich"))
+            except Exception as e:
+                self.after(0, lambda: self._log(f"❌ Produktions-Fehler: {e}"))
+            finally:
+                self.after(0, lambda: self._set_running(False))
+                self.after(0, lambda: self.sp_produce_btn.configure(state="normal"))
+
+        threading.Thread(target=do_execute, daemon=True).start()
 
     # ═════════════════════════════════════════════════════════════
     # SEITE 5: DESIGN / ANIMATION STYLE
