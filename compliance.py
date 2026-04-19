@@ -190,11 +190,13 @@ class ComplianceChecker:
         issues = []
         active = self.rules.get("disclaimers", {}).get("active_disclaimers", [])
 
-        if "finance_disclaimer" in active:
+        # Prüft alle aktiven Disclaimer (finance_disclaimer UND entertainment_disclaimer)
+        disclaimer_keys = {"finance_disclaimer", "entertainment_disclaimer"}
+        if disclaimer_keys & set(active):
             if not self._text_has_disclaimer(full_text):
-                issues.append("PFLICHT: Finance-Disclaimer fehlt im Script")
+                issues.append("PFLICHT: Disclaimer fehlt im Script")
             if not self._text_has_disclaimer(description):
-                issues.append("PFLICHT: Finance-Disclaimer fehlt in der Beschreibung")
+                issues.append("PFLICHT: Disclaimer fehlt in der Beschreibung")
 
         if "ai_generated_disclaimer" in active:
             ai_disc = self.rules.get("disclaimers", {}).get("ai_generated_disclaimer", "")
@@ -208,8 +210,16 @@ class ComplianceChecker:
 
     def _text_has_disclaimer(self, text: str) -> bool:
         t = text.lower()
-        keywords = ["keine finanzberatung", "keine anlageberatung", "bildungszweck",
-                     "disclaimer", "nicht als finanzberatung", "informationszweck"]
+        keywords = [
+            # Finance
+            "keine finanzberatung", "keine anlageberatung", "bildungszweck",
+            "nicht als finanzberatung", "informationszweck",
+            # Entertainment / Storytelling
+            "unterhaltungs- und bildungszweck", "unterhaltungszweck",
+            "bildungs- und unterhaltungszweck", "nur zu unterhaltung",
+            # Universal
+            "disclaimer", "haftungsausschluss",
+        ]
         return any(kw in t for kw in keywords)
 
     def _build_full_disclaimer(self) -> str:

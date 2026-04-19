@@ -198,7 +198,8 @@ class VideoScheduler:
                 result = run_pipeline(settings, topic=topic, dry_run=dry_run)
                 result["channel"] = channel_id or "Standard"
 
-                # run_pipeline already added to history — find the last entry instead of re-adding
+                # run_pipeline adds to history via its own VideoScheduler instance — reload
+                self.history = self._load_history()
                 last_entry = self.history[-1] if self.history else None
 
                 if auto_schedule and result["status"] == "success" and not dry_run and last_entry:

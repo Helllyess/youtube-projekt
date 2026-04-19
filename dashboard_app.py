@@ -5,6 +5,7 @@ Modernes Desktop-Fenster mit Ideen-Manager, Style-Picker und Stimmen-Auswahl.
 """
 
 import os, sys, json, threading, subprocess, time, re
+from datetime import datetime as _dt, timedelta as _td
 from pathlib import Path
 from datetime import datetime
 
@@ -172,11 +173,21 @@ class App(ctk.CTk):
     # ── Settings / Ideas laden ───────────────────────────────────
 
     def _load_settings(self) -> dict:
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(BASE_DIR / ".env")
+        except ImportError:
+            pass
         f = BASE_DIR / "config" / "settings.json"
         if f.exists():
             try:
                 with open(f, "r", encoding="utf-8") as fp:
-                    return json.load(fp)
+                    s = json.load(fp)
+                import os
+                s.setdefault("api_keys", {})
+                s["api_keys"]["openai"]     = os.environ.get("OPENAI_API_KEY", s["api_keys"].get("openai", ""))
+                s["api_keys"]["fish_audio"] = os.environ.get("FISH_AUDIO_API_KEY", s["api_keys"].get("fish_audio", ""))
+                return s
             except Exception as e:
                 print(f"[WARNUNG] settings.json fehlerhaft: {e}")
         return {}
@@ -1050,7 +1061,7 @@ class App(ctk.CTk):
         ts_display = timestamp
         if len(timestamp) == 15 and "_" in timestamp:
             try:
-                dt = __import__("datetime").datetime.strptime(timestamp, "%Y%m%d_%H%M%S")
+                dt = _dt.strptime(timestamp, "%Y%m%d_%H%M%S")
                 ts_display = dt.strftime("%d.%m.%Y %H:%M")
             except Exception:
                 pass
@@ -1876,7 +1887,7 @@ class App(ctk.CTk):
         self.sp_end_entry = ctk.CTkEntry(cfg, placeholder_text="YYYY-MM-DD",
                                           fg_color=C["input"], border_color=C["border"],
                                           width=140, font=ctk.CTkFont(size=11))
-        end_default = (datetime.now() + __import__("datetime").timedelta(days=30)).strftime("%Y-%m-%d")
+        end_default = (_dt.now() + _td(days=30)).strftime("%Y-%m-%d")
         self.sp_end_entry.insert(0, end_default)
         self.sp_end_entry.grid(row=2, column=1, sticky="w", padx=10, pady=4)
 
