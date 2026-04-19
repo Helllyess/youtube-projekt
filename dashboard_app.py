@@ -261,6 +261,7 @@ class App(ctk.CTk):
             ("💡", "Ideen"),
             ("✨", "Vorschläge"),
             ("📹", "Videos"),
+            ("📊", "Ergebnisse"),
             ("📅", "Planer"),
             ("📖", "Story-Planer"),
             ("🎨", "Design"),
@@ -295,6 +296,7 @@ class App(ctk.CTk):
         self._build_page_ideas()
         self._build_page_suggestions()
         self._build_page_videos()
+        self._build_page_ergebnisse()
         self._build_page_planner()
         self._build_page_story_planer()
         self._build_page_design()
@@ -326,6 +328,8 @@ class App(ctk.CTk):
             self._render_planner()
         if name == "Vorschläge":
             self._render_suggestions()
+        if name == "Ergebnisse":
+            self._render_ergebnisse()
 
     # ── Hilfsfunktionen ──────────────────────────────────────────
 
@@ -845,6 +849,292 @@ class App(ctk.CTk):
                     state="normal", text="✨  10 neue Vorschläge generieren"))
 
         threading.Thread(target=do_gen, daemon=True).start()
+
+    # ═════════════════════════════════════════════════════════════
+    # SEITE: ERGEBNISSE (alle Videos, neu + alt, vollständig)
+    # ═════════════════════════════════════════════════════════════
+
+    def _build_page_ergebnisse(self):
+        page = ctk.CTkFrame(self.content, fg_color="transparent")
+        self.pages["Ergebnisse"] = page
+
+        # Header-Leiste (fixiert, kein Scroll)
+        hdr = ctk.CTkFrame(page, fg_color="transparent")
+        hdr.pack(fill="x", padx=16, pady=(12, 6))
+
+        ctk.CTkLabel(hdr, text="📊  Ergebnisse",
+                     font=ctk.CTkFont(size=16, weight="bold"),
+                     text_color=C["text"]).pack(side="left")
+
+        ctk.CTkButton(hdr, text="🔄 Aktualisieren", width=130, height=30,
+                      font=ctk.CTkFont(size=11, weight="bold"), corner_radius=6,
+                      fg_color=C["card_hover"], hover_color=C["accent"],
+                      text_color=C["text"],
+                      command=self._render_ergebnisse).pack(side="right")
+
+        # Filter-Buttons
+        filt_row = ctk.CTkFrame(hdr, fg_color="transparent")
+        filt_row.pack(side="right", padx=12)
+        self.erg_filter = ctk.StringVar(value="alle")
+        for label, val, color in [
+            ("Alle", "alle", C["text"]),
+            ("✅ Erfolg", "success", C["green"]),
+            ("❌ Fehler", "error", C["red"]),
+            ("🔗 Online", "uploaded", C["accent"]),
+        ]:
+            ctk.CTkButton(filt_row, text=label, width=80, height=28,
+                          font=ctk.CTkFont(size=10), corner_radius=6,
+                          fg_color=C["card"], hover_color=C["card_hover"],
+                          text_color=color,
+                          command=lambda v=val: self._erg_set_filter(v)).pack(side="left", padx=2)
+
+        # Stats-Zeile
+        self.erg_stats_frame = ctk.CTkFrame(page, fg_color="transparent")
+        self.erg_stats_frame.pack(fill="x", padx=16, pady=(0, 8))
+
+        # Scrollbare Liste
+        self.erg_scroll = ctk.CTkScrollableFrame(page, fg_color="transparent")
+        self.erg_scroll.pack(fill="both", expand=True, padx=16, pady=(0, 12))
+
+    def _load_all_results(self) -> list:
+        """
+        Scannt alle output/**/result.json und channels/**/output/**/result.json.
+        Ergänzt mit video_history.json. Dedupliziert nach timestamp.
+        Gibt Liste sortiert nach timestamp (neueste zuerst) zurück.
+        """
+        seen = {}
+
+        # Alle result.json-Dateien aus output/ und channels/
+        for pattern in ["output/**/result.json", "channels/**/result.json"]:
+            for rfile in sorted(BASE_DIR.glob(pattern)):
+                try:
+                    with open(rfile, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                    ts = data.get("timestamp", str(rfile))
+                    if ts not in seen:
+                        data["_source"] = str(rfile.parent)
+                        seen[ts] = data
+                except Exception:
+                    pass
+
+        # video_history.json als Ergänzung (fügt upload_status hinzu)
+        hist_map = {}
+        for h in self._load_video_history():
+            hist_map[h.get("timestamp", "")] = h
+
+        for ts, entry in seen.items():
+            if ts in hist_map:
+                h = hist_map[ts]
+                entry.setdefault("upload_status", h.get("upload_status", "local"))
+                entry.setdefault("youtube_url", h.get("youtube_url"))
+                entry.setdefault("channel", h.get("channel", "Standard"))
+                entry.setdefault("scheduled_date", h.get("scheduled_date"))
+
+        results = sorted(seen.values(), key=lambda x: x.get("timestamp", ""), reverse=True)
+        return results
+
+    def _erg_set_filter(self, val: str):
+        self.erg_filter.set(val)
+        self._render_ergebnisse()
+
+    def _render_ergebnisse(self):
+        # Stats-Frame leeren
+        for w in self.erg_stats_frame.winfo_children():
+            w.destroy()
+        # Liste leeren
+        for w in self.erg_scroll.winfo_children():
+            w.destroy()
+
+        all_results = self._load_all_results()
+        filt = self.erg_filter.get()
+
+        # Stats berechnen
+        total   = len(all_results)
+        success = sum(1 for r in all_results if r.get("status") == "success")
+        errors  = sum(1 for r in all_results if r.get("status") == "error")
+        online  = sum(1 for r in all_results if r.get("youtube_url"))
+
+        for i in range(4):
+            self.erg_stats_frame.columnconfigure(i, weight=1)
+        for i, (val, label, color) in enumerate([
+            (f"📊 {total}",   "Gesamt",      C["text"]),
+            (f"✅ {success}", "Erfolgreich", C["green"]),
+            (f"❌ {errors}",  "Fehler",      C["red"]),
+            (f"🔗 {online}",  "Online",      C["accent"]),
+        ]):
+            c = ctk.CTkFrame(self.erg_stats_frame, fg_color=C["card"], corner_radius=8, height=54)
+            c.grid(row=0, column=i, sticky="nsew", padx=3, pady=(0, 8))
+            c.pack_propagate(False)
+            ctk.CTkLabel(c, text=val, font=ctk.CTkFont(size=16, weight="bold"),
+                         text_color=color).pack(side="left", padx=14, expand=True)
+            ctk.CTkLabel(c, text=label, font=ctk.CTkFont(size=10),
+                         text_color=C["muted"]).pack(side="left", expand=True)
+
+        # Filtern
+        filtered = all_results
+        if filt == "success":
+            filtered = [r for r in all_results if r.get("status") == "success"]
+        elif filt == "error":
+            filtered = [r for r in all_results if r.get("status") == "error"]
+        elif filt == "uploaded":
+            filtered = [r for r in all_results if r.get("youtube_url")]
+
+        if not filtered:
+            ctk.CTkLabel(self.erg_scroll,
+                         text="Keine Ergebnisse gefunden.\nVideos werden nach der Produktion hier angezeigt.",
+                         font=ctk.CTkFont(size=13), text_color=C["muted"],
+                         justify="center").pack(pady=50)
+            return
+
+        for r in filtered:
+            self._render_erg_card(r)
+
+    def _render_erg_card(self, r: dict):
+        status      = r.get("status", "unknown")
+        upload_st   = r.get("upload_status", "local")
+        topic       = r.get("topic") or r.get("title") or "Unbekannt"
+        timestamp   = r.get("timestamp", "")
+        channel     = r.get("channel", "Standard")
+        youtube_url = r.get("youtube_url", "")
+        error_msg   = r.get("error", "")
+        source_dir  = r.get("_source", "")
+
+        # Farbe nach Status
+        if status == "success":
+            bar_color = C["green"] if not youtube_url else C["accent"]
+        elif status == "error":
+            bar_color = C["red"]
+        else:
+            bar_color = C["muted"]
+
+        card = ctk.CTkFrame(self.erg_scroll, fg_color=C["card"], corner_radius=10,
+                            border_width=1, border_color=C["border"])
+        card.pack(fill="x", pady=4)
+
+        # Linker Farbbalken
+        ctk.CTkFrame(card, fg_color=bar_color, width=5, corner_radius=0).pack(
+            side="left", fill="y")
+
+        # Haupt-Inhalt
+        body = ctk.CTkFrame(card, fg_color="transparent")
+        body.pack(side="left", fill="both", expand=True, padx=14, pady=10)
+
+        # ── Zeile 1: Titel + Status-Badge ────────────────────────
+        row1 = ctk.CTkFrame(body, fg_color="transparent")
+        row1.pack(fill="x")
+
+        st_label = {
+            "success": "✅ Erfolgreich",
+            "error":   "❌ Fehler",
+            "running": "⏳ Läuft...",
+        }.get(status, f"❓ {status}")
+        st_color = {
+            "success": C["green"],
+            "error":   C["red"],
+            "running": C["gold"],
+        }.get(status, C["muted"])
+
+        ctk.CTkLabel(row1, text=topic,
+                     font=ctk.CTkFont(size=13, weight="bold"),
+                     text_color=C["text"], anchor="w",
+                     wraplength=560).pack(side="left")
+        ctk.CTkLabel(row1, text=st_label,
+                     font=ctk.CTkFont(size=11, weight="bold"),
+                     text_color=st_color).pack(side="right")
+
+        # ── Zeile 2: Meta ─────────────────────────────────────────
+        row2 = ctk.CTkFrame(body, fg_color="transparent")
+        row2.pack(fill="x", pady=(2, 4))
+
+        # Datum aus timestamp "20260413_210744" → "13.04.2026 21:07"
+        ts_display = timestamp
+        if len(timestamp) == 15 and "_" in timestamp:
+            try:
+                dt = __import__("datetime").datetime.strptime(timestamp, "%Y%m%d_%H%M%S")
+                ts_display = dt.strftime("%d.%m.%Y %H:%M")
+            except Exception:
+                pass
+
+        meta = f"🕐 {ts_display}  •  📺 {channel}"
+        ctk.CTkLabel(row2, text=meta, font=ctk.CTkFont(size=10),
+                     text_color=C["muted"]).pack(side="left")
+
+        if youtube_url:
+            ctk.CTkLabel(row2, text=f"  🔗 {youtube_url}",
+                         font=ctk.CTkFont(size=10), text_color=C["accent"]).pack(side="left")
+
+        # ── Zeile 3: Pipeline-Schritt-Badges ──────────────────────
+        row3 = ctk.CTkFrame(body, fg_color="transparent")
+        row3.pack(fill="x", pady=(0, 4))
+
+        steps = [
+            ("Script",     r.get("script_path")),
+            ("Audio",      r.get("audio_path")),
+            ("Video",      r.get("video_path")),
+            ("Thumbnail",  r.get("thumbnail_path")),
+            ("YouTube",    r.get("youtube_url")),
+        ]
+        for step_name, step_val in steps:
+            exists = bool(step_val) and (
+                step_name == "YouTube" or Path(step_val).exists()
+            )
+            badge_text = f"✓ {step_name}" if exists else f"✗ {step_name}"
+            badge_color = C["green"] if exists else C["card_hover"]
+            text_color  = C["text"] if exists else C["muted"]
+            ctk.CTkLabel(row3, text=badge_text,
+                         font=ctk.CTkFont(size=9, weight="bold"),
+                         fg_color=badge_color, text_color=text_color,
+                         corner_radius=4, padx=6, pady=2).pack(side="left", padx=2)
+
+        # ── Zeile 4: Fehlermeldung (nur bei error) ────────────────
+        if error_msg:
+            err_box = ctk.CTkFrame(body, fg_color="#1a0a0a", corner_radius=6,
+                                   border_width=1, border_color=C["red"])
+            err_box.pack(fill="x", pady=(2, 2))
+            ctk.CTkLabel(err_box, text=f"⚠️  {error_msg[:200]}",
+                         font=ctk.CTkFont(size=10), text_color=C["red"],
+                         anchor="w", justify="left", wraplength=580).pack(
+                anchor="w", padx=10, pady=5)
+
+        # ── Rechts: Action-Buttons ────────────────────────────────
+        btn_col = ctk.CTkFrame(card, fg_color="transparent")
+        btn_col.pack(side="right", padx=10, pady=10)
+
+        def mk_btn(parent, text, color, hover, cmd):
+            ctk.CTkButton(parent, text=text, width=100, height=28,
+                          font=ctk.CTkFont(size=10, weight="bold"), corner_radius=5,
+                          fg_color=color, hover_color=hover, text_color="white",
+                          command=cmd).pack(pady=2)
+
+        vid_path = r.get("video_path", "")
+        if vid_path and Path(vid_path).exists():
+            mk_btn(btn_col, "▶ Video", C["accent"], C["accent_h"],
+                   lambda p=vid_path: self._open_file(p))
+
+        script_path = r.get("script_path", "")
+        if script_path and Path(script_path).exists():
+            mk_btn(btn_col, "📄 Script", C["card_hover"], C["border"],
+                   lambda p=script_path: self._open_file(p))
+
+        thumb_path = r.get("thumbnail_path", "")
+        if thumb_path and Path(thumb_path).exists():
+            mk_btn(btn_col, "🖼️ Thumbnail", C["card_hover"], C["border"],
+                   lambda p=thumb_path: self._open_file(p))
+
+        if source_dir and Path(source_dir).exists():
+            mk_btn(btn_col, "📂 Ordner", C["card_hover"], C["border"],
+                   lambda p=source_dir: self._open_file(p))
+
+        if youtube_url:
+            mk_btn(btn_col, "🔗 YouTube", C["green"], "#059669",
+                   lambda u=youtube_url: self._open_url(u))
+
+    def _open_url(self, url: str):
+        try:
+            import webbrowser
+            webbrowser.open(url)
+        except Exception as e:
+            self._log(f"⚠️ URL konnte nicht geöffnet werden: {e}")
 
     # ═════════════════════════════════════════════════════════════
     # SEITE 3: VIDEOS (Historie + Fortschritt)
