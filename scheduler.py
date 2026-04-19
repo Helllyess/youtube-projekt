@@ -9,6 +9,7 @@ import json
 import logging
 import time
 import threading
+import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -43,7 +44,7 @@ class VideoScheduler:
     def add_to_history(self, result: dict):
         """Fügt ein Pipeline-Ergebnis zur Video-Historie hinzu."""
         entry = {
-            "id": len(self.history) + 1,
+            "id": str(uuid.uuid4()),
             "title": result.get("topic", "Unbekannt"),
             "status": result.get("status", "unknown"),
             "timestamp": result.get("timestamp", datetime.now().strftime("%Y%m%d_%H%M%S")),
@@ -196,10 +197,12 @@ class VideoScheduler:
             try:
                 result = run_pipeline(settings, topic=topic, dry_run=dry_run)
                 result["channel"] = channel_id or "Standard"
-                entry = self.add_to_history(result)
 
-                if auto_schedule and result["status"] == "success" and not dry_run:
-                    slot = self.add_to_queue(entry["id"])
+                # run_pipeline already added to history — find the last entry instead of re-adding
+                last_entry = self.history[-1] if self.history else None
+
+                if auto_schedule and result["status"] == "success" and not dry_run and last_entry:
+                    slot = self.add_to_queue(last_entry["id"])
                     logger.info(f"   📅 Geplant für: {slot}")
 
                 results.append(result)

@@ -59,11 +59,20 @@ class Voiceover:
                     response.stream_to_file(chunk_path)
                     audio_chunks.append(chunk_path)
 
-                if len(audio_chunks) == 1:
-                    import shutil
-                    shutil.move(audio_chunks[0], output_path)
-                else:
-                    _merge_audio_files(audio_chunks, output_path)
+                try:
+                    if len(audio_chunks) == 1:
+                        import shutil
+                        shutil.move(audio_chunks[0], output_path)
+                    else:
+                        _merge_audio_files(audio_chunks, output_path)
+                except Exception:
+                    import os as _os
+                    for f in audio_chunks:
+                        try:
+                            _os.remove(f)
+                        except Exception:
+                            pass
+                    raise
 
                 return output_path
 

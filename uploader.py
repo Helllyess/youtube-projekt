@@ -119,9 +119,7 @@ class YouTubeUploader:
                     logger.info(f"  Warte {self.retry_delay}s vor Retry...")
                     time.sleep(self.retry_delay)
                 else:
-                    raise
-
-        return None
+                    raise RuntimeError(f"Upload nach {self.max_retries} Versuchen fehlgeschlagen: {e}") from e
 
     def _upload_thumbnail(self, youtube, video_id: str, thumbnail_path: str):
         """Setzt Thumbnail für das Video."""
