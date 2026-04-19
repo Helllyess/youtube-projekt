@@ -25,8 +25,13 @@ from channel_manager import ChannelManager
 
 
 def load_settings(path: str = "config/settings.json") -> dict:
+    from dotenv import load_dotenv
+    load_dotenv()
     with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+        settings = json.load(f)
+    settings["api_keys"]["openai"] = os.environ.get("OPENAI_API_KEY", "")
+    settings["api_keys"]["fish_audio"] = os.environ.get("FISH_AUDIO_API_KEY", "")
+    return settings
 
 
 def setup_logging(settings: dict) -> logging.Logger:

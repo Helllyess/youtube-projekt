@@ -1,0 +1,23 @@
+# Secrets
+.env
+config/settings.json
+config/token.json
+config/youtube_client_secret.json
+channels/**/youtube_client_secret.json
+channels/**/token.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Generated output
+output/
+logs/
+
+# OS
+.DS_Store
+node_modules/
+
+# Misc
+]
