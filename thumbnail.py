@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 ThumbnailGenerator – Erstellt professionelle YouTube-Thumbnails.
-Nutzt Pillow für Finance-Design mit Gradient-Hintergrund.
+Nutzt Pillow für Storytelling-Design mit Gradient-Hintergrund.
 """
 
 import os
@@ -10,35 +10,34 @@ from pathlib import Path
 
 logger = logging.getLogger("thumbnail")
 
-# Finance-Farbpaletten
-FINANCE_THEMES = {
-    "bull": {  # Grün – Bullisher Markt
-        "bg_from": (10, 40, 10),
-        "bg_to": (0, 80, 30),
-        "accent": (0, 220, 100),
+STORYTELLING_THEMES = {
+    "mystery": {  # Geheimnisvoll – History/Crime/Thriller
+        "bg_from": (10, 5, 20),
+        "bg_to": (25, 10, 50),
+        "accent": (140, 80, 255),
         "text": (255, 255, 255),
-        "highlight": (0, 255, 120),
+        "highlight": (180, 120, 255),
     },
-    "bear": {  # Rot – Bearisher Markt
-        "bg_from": (40, 5, 5),
-        "bg_to": (80, 0, 0),
-        "accent": (220, 50, 50),
+    "drama": {  # Dramatisch – Biographien/Geschichte/Episch
+        "bg_from": (30, 8, 5),
+        "bg_to": (60, 15, 5),
+        "accent": (220, 80, 30),
         "text": (255, 255, 255),
-        "highlight": (255, 80, 80),
+        "highlight": (255, 140, 60),
     },
-    "neutral": {  # Dunkelblau – Standard Finance
-        "bg_from": (10, 10, 30),
-        "bg_to": (5, 20, 60),
-        "accent": (50, 120, 255),
-        "text": (255, 255, 255),
-        "highlight": (255, 200, 0),
-    },
-    "gold": {  # Gold – Premium Content
-        "bg_from": (20, 15, 5),
-        "bg_to": (40, 30, 0),
+    "comedy": {  # Bunt – Comedy/Brainrot/Fun
+        "bg_from": (5, 10, 35),
+        "bg_to": (15, 20, 70),
         "accent": (255, 200, 0),
         "text": (255, 255, 255),
-        "highlight": (255, 220, 50),
+        "highlight": (255, 230, 60),
+    },
+    "neutral": {  # Standard – Doku/Standard
+        "bg_from": (10, 10, 30),
+        "bg_to": (5, 20, 60),
+        "accent": (99, 102, 241),
+        "text": (255, 255, 255),
+        "highlight": (165, 180, 252),
     },
 }
 
@@ -64,7 +63,7 @@ class ThumbnailGenerator:
     def _create_with_pillow(self, title: str, subtitle: str, output_path: str,
                              Image, ImageDraw, ImageFont) -> str:
         """Erstellt professionelles Thumbnail mit Pillow."""
-        theme = FINANCE_THEMES.get(self._detect_theme(title), FINANCE_THEMES["neutral"])
+        theme = STORYTELLING_THEMES.get(self._detect_theme(title), STORYTELLING_THEMES["neutral"])
         w, h = self.size
 
         # Basis-Image mit Gradient
@@ -74,7 +73,7 @@ class ThumbnailGenerator:
         # Gradient-Hintergrund
         self._draw_gradient(draw, w, h, theme["bg_from"], theme["bg_to"])
 
-        # Dekorative Linien (Finance-Chart-Optik)
+        # Dekorative Linien
         self._draw_chart_decoration(draw, w, h, theme["accent"])
 
         # Akzent-Linie oben
@@ -131,7 +130,7 @@ class ThumbnailGenerator:
             draw.text((x, y), line, fill=theme["text"], font=font_title)
 
         # Untere Info-Leiste
-        footer_text = "FINANCE INSIGHTS"
+        footer_text = "CONTENTSTUDIO PRO"
         draw.rectangle([(0, h - 60), (w, h - 8)], fill=(0, 0, 0, 180))
         try:
             draw.text((60, h - 50), footer_text, fill=theme["highlight"],
@@ -239,12 +238,15 @@ class ThumbnailGenerator:
     def _detect_theme(self, title: str) -> str:
         """Erkennt das passende Theme aus dem Titel."""
         title_lower = title.lower()
-        if any(w in title_lower for w in ["crash", "korrektur", "verlust", "bear", "fallen"]):
-            return "bear"
-        if any(w in title_lower for w in ["gewinn", "steigen", "bull", "rekord", "profit"]):
-            return "bull"
-        if any(w in title_lower for w in ["gold", "premium", "geheimnis", "millionär"]):
-            return "gold"
+        if any(w in title_lower for w in ["geheimnis", "mord", "verbrechen", "verschwörung",
+                                           "thriller", "horror", "mystery", "dark", "crime"]):
+            return "mystery"
+        if any(w in title_lower for w in ["lustig", "witzig", "comedy", "absurd",
+                                           "brainrot", "fail", "challenge", "fun"]):
+            return "comedy"
+        if any(w in title_lower for w in ["biografie", "geschichte", "krieg", "held",
+                                           "kaiser", "könig", "drama", "episch", "legende"]):
+            return "drama"
         return "neutral"
 
     def _create_placeholder(self, title: str, output_path: str) -> str:

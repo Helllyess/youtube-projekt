@@ -2,7 +2,6 @@
 """
 VideoCreator – Erstellt YouTube-Videos aus Audio + Visuals.
 Nutzt MoviePy für die Video-Komposition.
-Erstellt professionelle Finance-Videos mit Textanimationen.
 """
 
 import os
@@ -33,7 +32,7 @@ class VideoCreator:
         try:
             from moviepy.editor import (
                 AudioFileClip, ColorClip, TextClip, CompositeVideoClip,
-                concatenate_videoclips, ImageClip
+                concatenate_videoclips
             )
             return self._create_with_moviepy(
                 audio_path, script, output_path, temp_dir,
@@ -55,13 +54,12 @@ class VideoCreator:
         total_duration = audio.duration
         logger.info(f"  Audio-Dauer: {total_duration:.1f}s")
 
-        # Haupt-Hintergrund (dunkles Finance-Design)
         bg = ColorClip(size=self.resolution, color=self.bg_color, duration=total_duration)
 
         clips = [bg]
 
         # Titel-Text (erste 5 Sekunden)
-        title = script.get("title", "Trading Video")
+        title = script.get("title", "ContentStudio Video")
         title_clean = self._clean_text(title)
 
         try:
@@ -96,7 +94,7 @@ class VideoCreator:
                         TextClip(
                             self._clean_text(section_title),
                             fontsize=self.font_size - 10,
-                            color="#FFD700",  # Gold für Finance
+                            color="#A78BFA",
                             font="Arial-Bold",
                             size=(self.resolution[0] - 200, None),
                             method="caption",
@@ -113,7 +111,7 @@ class VideoCreator:
 
         # Disclaimer am Ende
         disclaimer = self.settings.get("compliance", {}).get(
-            "disclaimer_text", "Keine Finanzberatung."
+            "disclaimer_text", "Nur zu Unterhaltungs- und Bildungszwecken."
         )
         if total_duration > 8:
             try:
@@ -167,7 +165,7 @@ class VideoCreator:
         try:
             import subprocess
 
-            title = self._clean_text(script.get("title", "Trading Video"))
+            title = self._clean_text(script.get("title", "ContentStudio Video"))
 
             cmd = [
                 "ffmpeg", "-y",

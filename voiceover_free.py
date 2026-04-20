@@ -118,12 +118,13 @@ class FreeVoiceover:
             for f in files:
                 combined += AudioSegment.from_mp3(f)
             combined.export(output, format="mp3", bitrate="128k")
+        except ImportError:
+            import shutil
+            shutil.copy(files[0], output)
+            logger.warning("pydub nicht verfügbar – nur erster Chunk verwendet")
+        finally:
             for f in files:
                 try:
                     os.remove(f)
                 except Exception:
                     pass
-        except ImportError:
-            import shutil
-            shutil.copy(files[0], output)
-            logger.warning("pydub nicht verfügbar – nur erster Chunk verwendet")
