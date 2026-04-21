@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-YouTube Automation v2.1 – Main Pipeline Orchestrator
-Erstellt automatisch Finance/Daytrading Videos und lädt sie auf YouTube hoch.
+ContentStudio Pro – Main Pipeline Orchestrator
+Erstellt automatisch Videos (Storytelling, Ads, Kids, Reddit) und lädt sie hoch.
 Unterstützt mehrere Kanäle via --channel Parameter.
 """
 
@@ -29,8 +29,9 @@ def load_settings(path: str = "config/settings.json") -> dict:
     load_dotenv()
     with open(path, "r", encoding="utf-8") as f:
         settings = json.load(f)
-    settings["api_keys"]["openai"] = os.environ.get("OPENAI_API_KEY", "")
+    settings["api_keys"]["openai"]     = os.environ.get("OPENAI_API_KEY", "")
     settings["api_keys"]["fish_audio"] = os.environ.get("FISH_AUDIO_API_KEY", "")
+    settings["api_keys"]["runway"]     = os.environ.get("RUNWAY_API_KEY", "")
     return settings
 
 
@@ -117,9 +118,19 @@ def run_pipeline(settings: dict, topic: str = None, dry_run: bool = False):
 
         # ── Schritt 5: Thumbnail erstellen ──────────────────────────────
         logger.info("🖼️  Schritt 5: Thumbnail-Erstellung...")
+        # Format (Portrait/Landscape) anhand Audio-Dauer bestimmen
+        shorts_threshold = settings.get("video", {}).get("shorts_threshold_seconds", 180)
+        try:
+            from moviepy.editor import AudioFileClip as _AC
+            _a = _AC(str(audio_path)); _dur = _a.duration; _a.close()
+        except Exception:
+            _dur = 999
+        portrait_mode = _dur < shorts_threshold
+
         thumb_gen = ThumbnailGenerator(settings)
         thumbnail_path = output_dir / "thumbnail.jpg"
-        thumb_gen.create(script["title"], script.get("subtitle", ""), str(thumbnail_path))
+        thumb_gen.create(script["title"], script.get("subtitle", ""), str(thumbnail_path),
+                         portrait=portrait_mode)
         logger.info(f"   Thumbnail gespeichert: {thumbnail_path}")
         result["thumbnail_path"] = str(thumbnail_path)
 

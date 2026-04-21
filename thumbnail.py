@@ -46,28 +46,36 @@ class ThumbnailGenerator:
     def __init__(self, settings: dict):
         self.settings = settings
         self.cfg = settings.get("thumbnail", {})
-        self.size = tuple(self.cfg.get("resolution", [1280, 720]))
         self.theme_name = "neutral"
 
-    def create(self, title: str, subtitle: str, output_path: str) -> str:
-        """Erstellt ein YouTube-Thumbnail."""
+    def _get_size(self, portrait: bool) -> tuple:
+        if portrait:
+            return (720, 1280)  # 9:16 für Shorts/Reels
+        return tuple(self.cfg.get("resolution", [1280, 720]))  # 16:9 Standard
+
+    def create(self, title: str, subtitle: str, output_path: str, portrait: bool = False) -> str:
+        """Erstellt ein Thumbnail – automatisch 16:9 oder 9:16 je nach Format."""
         Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+        fmt = "9:16 (Short)" if portrait else "16:9"
+        logger.info(f"  Thumbnail-Format: {fmt}")
 
         try:
             from PIL import Image, ImageDraw, ImageFont
-            return self._create_with_pillow(title, subtitle, output_path, Image, ImageDraw, ImageFont)
+            return self._create_with_pillow(title, subtitle, output_path, portrait,
+                                            Image, ImageDraw, ImageFont)
         except ImportError:
             logger.warning("Pillow nicht installiert. Erstelle einfaches Thumbnail...")
-            return self._create_placeholder(title, output_path)
+            return self._create_placeholder(title, output_path, portrait)
 
     def _create_with_pillow(self, title: str, subtitle: str, output_path: str,
-                             Image, ImageDraw, ImageFont) -> str:
+                             portrait: bool, Image, ImageDraw, ImageFont) -> str:
         """Erstellt professionelles Thumbnail mit Pillow."""
         theme = STORYTELLING_THEMES.get(self._detect_theme(title), STORYTELLING_THEMES["neutral"])
-        w, h = self.size
+        size = self._get_size(portrait)
+        w, h = size
 
         # Basis-Image mit Gradient
-        img = Image.new("RGB", self.size, theme["bg_from"])
+        img = Image.new("RGB", size, theme["bg_from"])
         draw = ImageDraw.Draw(img)
 
         # Gradient-Hintergrund
@@ -80,10 +88,10 @@ class ThumbnailGenerator:
         draw.rectangle([(0, 0), (w, 8)], fill=theme["accent"])
         draw.rectangle([(0, h - 8), (w, h)], fill=theme["accent"])
 
-        # Titel-Text
+        # Titel-Text – bei Portrait etwas kleinere Schrift wegen schmalerer Breite
         title_clean = self._prepare_title(title)
-        font_size_title = self.cfg.get("font_size_title", 72)
-        font_size_sub = self.cfg.get("font_size_subtitle", 40)
+        font_size_title = self.cfg.get("font_size_title", 72) if not portrait else 58
+        font_size_sub = self.cfg.get("font_size_subtitle", 40) if not portrait else 32
 
         try:
             # Versuche System-Font zu laden
@@ -249,24 +257,24 @@ class ThumbnailGenerator:
             return "drama"
         return "neutral"
 
-    def _create_placeholder(self, title: str, output_path: str) -> str:
+    def _create_placeholder(self, title: str, output_path: str, portrait: bool = False) -> str:
         """Fallback: Erstellt ein einfaches schwarzes Thumbnail via ffmpeg."""
+        size_str = "720x1280" if portrait else "1280x720"
         try:
             import subprocess
+            tmp = output_path.replace(".jpg", "_temp.jpg")
             cmd = [
                 "ffmpeg", "-y",
                 "-f", "lavfi",
-                "-i", f"color=c=0x0A0A1E:size=1280x720:rate=1",
-                "-frames:v", "1",
-                output_path.replace(".jpg", "_temp.jpg"),
+                "-i", f"color=c=0x0A0A1E:size={size_str}:rate=1",
+                "-frames:v", "1", tmp,
             ]
             subprocess.run(cmd, capture_output=True, timeout=30)
             import shutil
-            shutil.move(output_path.replace(".jpg", "_temp.jpg"), output_path)
-            logger.info(f"Placeholder-Thumbnail erstellt: {output_path}")
+            shutil.move(tmp, output_path)
+            logger.info(f"Placeholder-Thumbnail erstellt: {output_path} ({size_str})")
         except Exception as e:
             logger.warning(f"Thumbnail-Erstellung fehlgeschlagen: {e}")
-            # Leere Datei als Fallback
             Path(output_path).touch()
 
         return output_path
