@@ -67,46 +67,66 @@ class ChannelManager:
         cfg["_path"] = str(self.channels_dir / channel_id)
         return cfg
 
-    def create_channel(self, channel_id: str, name: str, niche: str = "finance",
-                       language: str = "de", privacy: str = "private") -> Path:
+    def create_channel(self, channel_id: str, name: str, niche: str = "storytelling",
+                       language: str = "de", privacy: str = "private",
+                       content_type: str = "story", ads_mode: str = "script") -> Path:
         """Erstellt einen neuen Kanal-Ordner mit Standard-Config."""
         channel_dir = self.channels_dir / channel_id
         channel_dir.mkdir(parents=True, exist_ok=True)
+
+        # Standard-Werte je nach Content-Typ
+        type_defaults = {
+            "story":  {"style": "storytelling_engaging", "duration": 10, "category": "27",
+                       "tags": ["Geschichte", "Storytelling", "Doku", "Fakten"],
+                       "topics": ["Historische Ereignisse", "Faszinierende Biographien",
+                                  "Ungeklärte Mysterien", "Weltgeschichte"]},
+            "ads":    {"style": "storytelling_engaging", "duration": 1,  "category": "26",
+                       "tags": ["Produkt", "Review", "Empfehlung"],
+                       "topics": []},
+            "kids":   {"style": "storytelling_engaging", "duration": 5,  "category": "20",
+                       "tags": ["Kinder", "Bildung", "Lernen", "Spaß"],
+                       "topics": ["Tiere", "Zahlen lernen", "Farben", "Dinosaurier"]},
+            "reddit": {"style": "storytelling_engaging", "duration": 8,  "category": "24",
+                       "tags": ["Reddit", "Stories", "Drama", "AITA"],
+                       "topics": ["Reddit AITA", "Reddit Stories", "Lustige Reddit Posts"]},
+        }
+        d = type_defaults.get(content_type, type_defaults["story"])
 
         config = {
             "id": channel_id,
             "name": name,
             "platform": "youtube",
             "niche": niche,
+            "content_type": content_type,   # story | ads | kids | reddit
+            "ads_mode": ads_mode,           # script | ai_runway  (nur bei content_type=ads)
             "language": language,
             "active": True,
             "upload": {
                 "default_privacy": privacy,
-                "default_category": "25",
-                "made_for_kids": False,
+                "default_category": d["category"],
+                "made_for_kids": content_type == "kids",
                 "notify_subscribers": True,
                 "schedule_delay_hours": 0
             },
             "script": {
-                "target_duration_minutes": 8,
-                "style": "educational_engaging",
+                "target_duration_minutes": d["duration"],
+                "style": d["style"],
                 "language": language
             },
             "voiceover": {
                 "provider": "fish_audio",
                 "fish_voice_id": "54a5170264694bfc8e9ad98df7bd89c3"
             },
-            "topics": [
-                "Daytrading Strategien",
-                "Aktienmarkt Analyse",
-                "Kryptowährungen",
-                "Trading Psychologie"
-            ],
-            "default_tags": [
-                "Daytrading", "Aktien", "Trading", "Finanzen", "Börse"
-            ],
+            "topics": d["topics"],
+            "default_tags": d["tags"],
+            "product": {
+                "_info": "Nur bei content_type=ads + ads_mode=ai_runway relevant",
+                "name": "",
+                "description": "",
+                "image_path": ""
+            },
             "branding": {
-                "outro_text": f"Abonniere {name} für tägliche Finance-Insights!",
+                "outro_text": f"Abonniere {name}!",
                 "watermark": False
             }
         }
@@ -156,10 +176,13 @@ class ChannelManager:
         channel_path = Path(channel_cfg["_path"])
 
         # Kanal-spezifische Überschreibungen
-        settings["channel"]["niche"] = channel_cfg.get("niche", "finance")
+        settings["channel"]["niche"] = channel_cfg.get("niche", "storytelling")
+        settings["channel"]["content_type"] = channel_cfg.get("content_type", "story")
+        settings["channel"]["ads_mode"] = channel_cfg.get("ads_mode", "script")
+        settings["channel"]["product"] = channel_cfg.get("product", {})
         settings["channel"]["language"] = channel_cfg.get("language", "de")
         settings["channel"]["default_privacy"] = channel_cfg["upload"].get("default_privacy", "private")
-        settings["channel"]["default_category"] = channel_cfg["upload"].get("default_category", "25")
+        settings["channel"]["default_category"] = channel_cfg["upload"].get("default_category", "27")
         settings["channel"]["default_tags"] = channel_cfg.get("default_tags", [])
         settings["channel"]["made_for_kids"] = channel_cfg["upload"].get("made_for_kids", False)
 

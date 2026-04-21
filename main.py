@@ -51,11 +51,104 @@ def setup_logging(settings: dict) -> logging.Logger:
     return logging.getLogger("main")
 
 
-def run_pipeline(settings: dict, topic: str = None, dry_run: bool = False):
+def _run_ads_ai_pipeline(settings: dict, product_name: str = None,
+                         product_image: str = None, dry_run: bool = False) -> dict:
+    """Runway KI-Ads Pipeline: Produkt-Info → KI-Video → Upload."""
+    from ads_creator import AdsCreator
+
     logger = logging.getLogger("main")
+    logger.info("🛍️  Ads KI-Pipeline (Runway) gestartet")
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_dir = Path(settings["paths"]["output_dir"]) / timestamp
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    product_cfg = settings.get("channel", {}).get("product", {})
+    name = product_name or product_cfg.get("name", "Produkt")
+    desc = product_cfg.get("description", "")
+    img  = product_image or product_cfg.get("image_path", "")
+
+    result = {
+        "timestamp": timestamp,
+        "status": "running",
+        "topic": name,
+        "content_type": "ads_ai",
+        "script_path": None,
+        "audio_path": None,
+        "video_path": None,
+        "thumbnail_path": None,
+        "youtube_url": None,
+    }
+
+    try:
+        creator = AdsCreator(settings)
+        video_path = output_dir / "ad_video.mp4"
+
+        if dry_run:
+            logger.info("   [DRY RUN] Runway-Call übersprungen")
+            video_path.touch()
+        elif img and Path(img).exists():
+            creator.create_from_image(img, name, desc, str(video_path))
+        else:
+            creator.create_from_text(name, desc, str(video_path))
+
+        result["video_path"] = str(video_path)
+
+        # Thumbnail aus Produktbild oder Placeholder
+        thumb_path = output_dir / "thumbnail.jpg"
+        if img and Path(img).exists():
+            import shutil
+            shutil.copy(img, str(thumb_path))
+        else:
+            ThumbnailGenerator(settings).create(name, "Produkt Ad", str(thumb_path))
+        result["thumbnail_path"] = str(thumb_path)
+
+        if not dry_run:
+            logger.info("🚀 Upload zu YouTube...")
+            uploader = YouTubeUploader(settings)
+            url = uploader.upload(
+                video_path=str(video_path),
+                thumbnail_path=str(thumb_path),
+                title=name,
+                description=desc,
+                tags=settings["channel"].get("default_tags", []),
+            )
+            result["youtube_url"] = url
+            logger.info(f"   ✅ {url}")
+
+        result["status"] = "success"
+
+    except Exception as e:
+        result["status"] = "error"
+        result["error"] = str(e)
+        logger.error(f"❌ Ads-KI-Pipeline Fehler: {e}", exc_info=True)
+
+    result_path = output_dir / "result.json"
+    with open(result_path, "w", encoding="utf-8") as f:
+        json.dump(result, f, ensure_ascii=False, indent=2)
+
+    try:
+        from scheduler import VideoScheduler
+        VideoScheduler(settings).add_to_history(result)
+    except Exception:
+        pass
+
+    return result
+
+
+def run_pipeline(settings: dict, topic: str = None, dry_run: bool = False,
+                 product_image: str = None):
+    logger = logging.getLogger("main")
+    content_type = settings.get("channel", {}).get("content_type", "story")
+    ads_mode     = settings.get("channel", {}).get("ads_mode", "script")
+
     logger.info("=" * 60)
-    logger.info(f"YouTube Automation v{settings['version']} gestartet")
+    logger.info(f"ContentStudio Pro – Pipeline gestartet [{content_type.upper()}]")
     logger.info("=" * 60)
+
+    # Ads KI-Runway → eigene Pipeline
+    if content_type == "ads" and ads_mode == "ai_runway":
+        return _run_ads_ai_pipeline(settings, topic, product_image, dry_run)
 
     # Temp-Ordner vorbereiten
     temp_dir = Path(settings["paths"].get("temp_dir", "output/temp"))
@@ -74,6 +167,7 @@ def run_pipeline(settings: dict, topic: str = None, dry_run: bool = False):
         "video_path": None,
         "thumbnail_path": None,
         "youtube_url": None,
+        "content_type": content_type,
     }
 
     try:

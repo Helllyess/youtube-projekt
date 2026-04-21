@@ -2647,6 +2647,17 @@ class App(ctk.CTk):
                          justify="center").pack(pady=40)
             return
 
+        _CT_BADGE = {
+            "story":  ("📖 Story",  C["accent"]),
+            "ads":    ("🛍️ Ads",   C["purple"]),
+            "kids":   ("👶 Kids",  C["green"]),
+            "reddit": ("🎭 Reddit", C["orange"]),
+        }
+        _AM_BADGE = {
+            "script":     "Script-Pipeline",
+            "ai_runway":  "⚡ KI-Runway",
+        }
+
         for ch in channels:
             ok_token = ch.get("_token", False)
             ok_secret = ch.get("_secret", False)
@@ -2654,12 +2665,14 @@ class App(ctk.CTk):
 
             color = C["green"] if ok_token else (C["orange"] if ok_secret else C["red"])
             status = "✓ Verbunden" if ok_token else ("○ Bereit" if ok_secret else "✗ Secret fehlt")
+            ct = ch.get("content_type", "story")
+            ct_label, ct_color = _CT_BADGE.get(ct, ("📖 Story", C["accent"]))
 
             card = ctk.CTkFrame(self.ch_list, fg_color=C["card"], corner_radius=10,
                                 border_width=1, border_color=C["border"])
             card.pack(fill="x", pady=4)
 
-            bar = ctk.CTkFrame(card, fg_color=color, width=4, corner_radius=0)
+            bar = ctk.CTkFrame(card, fg_color=ct_color, width=4, corner_radius=0)
             bar.pack(side="left", fill="y")
 
             mid = ctk.CTkFrame(card, fg_color="transparent")
@@ -2670,6 +2683,19 @@ class App(ctk.CTk):
             ctk.CTkLabel(nr, text=ch.get("name", ch["_id"]),
                          font=ctk.CTkFont(size=14, weight="bold"),
                          text_color=C["text"]).pack(side="left")
+
+            # Content-Typ Badge
+            ctk.CTkLabel(nr, text=f"  {ct_label}",
+                         font=ctk.CTkFont(size=10, weight="bold"),
+                         text_color=ct_color).pack(side="left", padx=6)
+
+            # Ads-Modus Badge
+            if ct == "ads":
+                am = _AM_BADGE.get(ch.get("ads_mode", "script"), "Script")
+                ctk.CTkLabel(nr, text=f"· {am}",
+                             font=ctk.CTkFont(size=10),
+                             text_color=C["muted"]).pack(side="left")
+
             if not active:
                 ctk.CTkLabel(nr, text="  INAKTIV",
                              font=ctk.CTkFont(size=10, weight="bold"),
@@ -2687,19 +2713,175 @@ class App(ctk.CTk):
 
             ctk.CTkLabel(right, text=status,
                          font=ctk.CTkFont(size=11, weight="bold"),
-                         text_color=color).pack(pady=(8, 4))
+                         text_color=color).pack(pady=(8, 2))
 
             cid = ch["_id"]
-            ctk.CTkButton(right, text="▶ Starten", height=28, width=90,
+            ctk.CTkButton(right, text="▶ Starten", height=28, width=100,
                           font=ctk.CTkFont(size=11), corner_radius=6,
                           fg_color=C["accent"], hover_color=C["accent_h"],
                           command=lambda c=cid: self._run_channel(c)).pack(pady=(0, 4))
 
-            ctk.CTkButton(right, text="📂 Öffnen", height=24, width=90,
+            ctk.CTkButton(right, text="⚙️ Typ ändern", height=24, width=100,
+                          font=ctk.CTkFont(size=10), corner_radius=6,
+                          fg_color=C["active_bg"], hover_color=C["border"],
+                          text_color=C["accent"],
+                          command=lambda c=cid: self._open_channel_settings(c)).pack(pady=(0, 4))
+
+            ctk.CTkButton(right, text="📂 Öffnen", height=24, width=100,
                           font=ctk.CTkFont(size=10), corner_radius=6,
                           fg_color=C["card_hover"], hover_color=C["border"],
                           text_color=C["text"],
                           command=lambda c=cid: self._open_channel_dir(c)).pack(pady=(0, 6))
+
+    def _open_channel_settings(self, cid: str):
+        """Dialog zum Ändern des Content-Typs und Ads-Modus eines Kanals."""
+        cfg_path = BASE_DIR / "channels" / cid / "channel_config.json"
+        if not cfg_path.exists():
+            self._log(f"❌ channel_config.json für '{cid}' nicht gefunden")
+            return
+
+        with open(cfg_path, "r", encoding="utf-8") as f:
+            cfg = json.load(f)
+
+        win = ctk.CTkToplevel(self)
+        win.title(f"⚙️  {cfg.get('name', cid)} – Content-Typ")
+        win.geometry("480x520")
+        win.resizable(False, False)
+        win.grab_set()
+        win.configure(fg_color=C["bg"])
+
+        ctk.CTkLabel(win, text=f"Content-Typ für: {cfg.get('name', cid)}",
+                     font=ctk.CTkFont(size=14, weight="bold"),
+                     text_color=C["text"]).pack(pady=(20, 4), padx=24, anchor="w")
+        ctk.CTkLabel(win, text="Welche Art von Videos produziert dieser Kanal?",
+                     font=ctk.CTkFont(size=11), text_color=C["muted"]).pack(padx=24, anchor="w")
+
+        # Content-Typ Auswahl
+        ct_var = ctk.StringVar(value=cfg.get("content_type", "story"))
+        am_var = ctk.StringVar(value=cfg.get("ads_mode", "script"))
+
+        type_frame = ctk.CTkFrame(win, fg_color=C["card"], corner_radius=10,
+                                   border_width=1, border_color=C["border"])
+        type_frame.pack(fill="x", padx=24, pady=12)
+
+        types = [
+            ("📖", "story",  "Story / Doku",   "Storytelling, Geschichte, Biographien"),
+            ("🛍️", "ads",   "Produkt-Ads",    "Werbeclips für Produkte"),
+            ("👶", "kids",   "Kinder-Content", "COPPA-konform, bunte Animationen"),
+            ("🎭", "reddit", "Reddit Stories", "Reddit-Posts als dramatische Videos"),
+        ]
+
+        for emoji, val, label, desc in types:
+            row = ctk.CTkFrame(type_frame, fg_color="transparent")
+            row.pack(fill="x", padx=12, pady=4)
+            ctk.CTkRadioButton(row, text=f"{emoji}  {label}", variable=ct_var, value=val,
+                               font=ctk.CTkFont(size=12, weight="bold"),
+                               text_color=C["text"],
+                               fg_color=C["accent"],
+                               command=lambda: _toggle_ads_frame()).pack(side="left")
+            ctk.CTkLabel(row, text=f"  — {desc}", font=ctk.CTkFont(size=10),
+                         text_color=C["muted"]).pack(side="left")
+
+        # Ads-Modus (nur sichtbar wenn Ads gewählt)
+        ads_frame = ctk.CTkFrame(win, fg_color=C["card"], corner_radius=10,
+                                  border_width=1, border_color=C["border"])
+
+        ctk.CTkLabel(ads_frame, text="Ads-Modus:",
+                     font=ctk.CTkFont(size=12, weight="bold"),
+                     text_color=C["text"]).pack(anchor="w", padx=12, pady=(10, 4))
+
+        for val, label, desc in [
+            ("script",    "Script-Pipeline",
+             "GPT schreibt Ad-Text → Voiceover → Video. Günstig, hohe Stückzahl."),
+            ("ai_runway", "⚡ KI-Runway (Premium)",
+             "Produktfoto/Beschreibung → Runway Gen-4 generiert KI-Video. ~$0.25/Video."),
+        ]:
+            r = ctk.CTkFrame(ads_frame, fg_color="transparent")
+            r.pack(fill="x", padx=12, pady=3)
+            ctk.CTkRadioButton(r, text=label, variable=am_var, value=val,
+                               font=ctk.CTkFont(size=12),
+                               text_color=C["text"],
+                               fg_color=C["purple"]).pack(side="left")
+            ctk.CTkLabel(r, text=f"  {desc}", font=ctk.CTkFont(size=10),
+                         text_color=C["muted"], wraplength=280,
+                         justify="left").pack(side="left", padx=6)
+
+        # Produkt-Info Felder (nur bei KI-Runway)
+        prod_cfg = cfg.get("product", {})
+        prod_frame = ctk.CTkFrame(win, fg_color=C["card"], corner_radius=10,
+                                   border_width=1, border_color=C["border"])
+
+        ctk.CTkLabel(prod_frame, text="Produkt-Info für KI-Runway:",
+                     font=ctk.CTkFont(size=12, weight="bold"),
+                     text_color=C["text"]).pack(anchor="w", padx=12, pady=(10, 4))
+
+        pf1 = ctk.CTkFrame(prod_frame, fg_color="transparent")
+        pf1.pack(fill="x", padx=12, pady=3)
+        ctk.CTkLabel(pf1, text="Produktname:", width=120, font=ctk.CTkFont(size=11),
+                     text_color=C["muted"]).pack(side="left")
+        prod_name_var = ctk.StringVar(value=prod_cfg.get("name", ""))
+        ctk.CTkEntry(pf1, textvariable=prod_name_var, height=28,
+                     fg_color=C["input"], border_color=C["border"],
+                     text_color=C["text"]).pack(side="left", fill="x", expand=True)
+
+        pf2 = ctk.CTkFrame(prod_frame, fg_color="transparent")
+        pf2.pack(fill="x", padx=12, pady=3)
+        ctk.CTkLabel(pf2, text="Beschreibung:", width=120, font=ctk.CTkFont(size=11),
+                     text_color=C["muted"]).pack(side="left")
+        prod_desc_var = ctk.StringVar(value=prod_cfg.get("description", ""))
+        ctk.CTkEntry(pf2, textvariable=prod_desc_var, height=28,
+                     fg_color=C["input"], border_color=C["border"],
+                     text_color=C["text"]).pack(side="left", fill="x", expand=True)
+
+        pf3 = ctk.CTkFrame(prod_frame, fg_color="transparent")
+        pf3.pack(fill="x", padx=12, pady=(3, 10))
+        ctk.CTkLabel(pf3, text="Bild-Pfad:", width=120, font=ctk.CTkFont(size=11),
+                     text_color=C["muted"]).pack(side="left")
+        prod_img_var = ctk.StringVar(value=prod_cfg.get("image_path", ""))
+        ctk.CTkEntry(pf3, textvariable=prod_img_var, height=28,
+                     fg_color=C["input"], border_color=C["border"],
+                     text_color=C["text"]).pack(side="left", fill="x", expand=True)
+
+        def _toggle_ads_frame():
+            is_ads = ct_var.get() == "ads"
+            if is_ads:
+                ads_frame.pack(fill="x", padx=24, pady=(0, 8))
+                _toggle_prod_frame()
+            else:
+                ads_frame.pack_forget()
+                prod_frame.pack_forget()
+
+        def _toggle_prod_frame(*_):
+            if ct_var.get() == "ads" and am_var.get() == "ai_runway":
+                prod_frame.pack(fill="x", padx=24, pady=(0, 8))
+            else:
+                prod_frame.pack_forget()
+
+        am_var.trace_add("write", _toggle_prod_frame)
+
+        # Initial sichtbarkeit
+        _toggle_ads_frame()
+
+        # Speichern
+        def _save():
+            cfg["content_type"] = ct_var.get()
+            cfg["ads_mode"] = am_var.get()
+            cfg.setdefault("product", {})
+            cfg["product"]["name"] = prod_name_var.get()
+            cfg["product"]["description"] = prod_desc_var.get()
+            cfg["product"]["image_path"] = prod_img_var.get()
+
+            with open(cfg_path, "w", encoding="utf-8") as f:
+                json.dump(cfg, f, ensure_ascii=False, indent=2)
+
+            self._log(f"✅ Kanal '{cid}': Content-Typ → {cfg['content_type']}, Ads-Modus → {cfg['ads_mode']}")
+            self.after(0, self._render_channels)
+            win.destroy()
+
+        ctk.CTkButton(win, text="💾  Speichern", height=36,
+                      font=ctk.CTkFont(size=13, weight="bold"),
+                      fg_color=C["accent"], hover_color=C["accent_h"],
+                      corner_radius=8, command=_save).pack(pady=12, padx=24, fill="x")
 
     # ═════════════════════════════════════════════════════════════
     # SEITE 6: LOG
