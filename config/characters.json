@@ -1,0 +1,92 @@
+[
+  {
+    "id": "tanzkatze",
+    "name": "Tanzkatze",
+    "emoji": "🐱",
+    "description": "Eine verspielte, animierte Katze die zur Musik tanzt und Fakten erklärt.",
+    "base_prompt": "cute animated cat character with big expressive eyes, colorful orange and white fur, wearing a tiny bow tie, standing upright like a human, cartoon-realistic style",
+    "visual_style": "Vibrant colors, soft lighting, cartoon-realistic 3D render.",
+    "movement_style": "both",
+    "image_path": "",
+    "voice_id": "54a5170264694bfc8e9ad98df7bd89c3",
+    "created": "2026-04-21",
+    "tags": [
+      "cat",
+      "dancing",
+      "cute",
+      "fun"
+    ]
+  },
+  {
+    "id": "skybot",
+    "name": "SkyBot",
+    "emoji": "🤖",
+    "description": "Ein futuristischer KI-Roboter der Wissen vermittelt – seriös aber sympathisch.",
+    "base_prompt": "sleek futuristic humanoid robot with glowing blue eyes and silver metallic body, holographic face display showing expressive emotions, high-tech design",
+    "visual_style": "Sci-fi aesthetic, blue neon accents, dark tech background.",
+    "movement_style": "talking",
+    "image_path": "",
+    "voice_id": "54a5170264694bfc8e9ad98df7bd89c3",
+    "created": "2026-04-21",
+    "tags": [
+      "robot",
+      "tech",
+      "serious",
+      "educational"
+    ]
+  },
+  {
+    "id": "luna_mystic",
+    "name": "Luna",
+    "emoji": "🌙",
+    "description": "Mystische weibliche Charakter-Avatar für Geschichte und Mystery-Content.",
+    "base_prompt": "beautiful mystical female character with flowing silver hair and glowing violet eyes, ethereal magical appearance, fantasy style, slight smile, elegant",
+    "visual_style": "Ethereal purple and gold tones, magical particle effects, cinematic.",
+    "movement_style": "talking",
+    "image_path": "",
+    "voice_id": "54a5170264694bfc8e9ad98df7bd89c3",
+    "created": "2026-04-21",
+    "tags": [
+      "mystery",
+      "history",
+      "female",
+      "magical"
+    ]
+  },
+  {
+    "id": "brainrot_bunny",
+    "name": "BrainrotBunny",
+    "emoji": "🐰",
+    "description": "Chaotischer, überdrehter Hase für Brainrot- und Comedy-Content.",
+    "base_prompt": "chaotic cartoon bunny with wild multicolored fur, enormous googly eyes, manic grin, holding random objects, hyper-energetic pose, meme-worthy design",
+    "visual_style": "Over-saturated colors, chaotic background, energetic comic style.",
+    "movement_style": "dancing",
+    "image_path": "",
+    "voice_id": "54a5170264694bfc8e9ad98df7bd89c3",
+    "created": "2026-04-21",
+    "tags": [
+      "comedy",
+      "brainrot",
+      "chaotic",
+      "meme"
+    ]
+  },
+  {
+    "id": "pro_human",
+    "name": "Alex (Human Avatar)",
+    "emoji": "🧑",
+    "description": "Realistischer menschlicher Avatar für seriösen oder Produkt-Content.",
+    "base_prompt": "photorealistic young adult with friendly smile, modern casual clothing, natural skin tone, clean professional appearance, neutral background",
+    "visual_style": "Photorealistic, studio lighting, natural colors.",
+    "movement_style": "talking",
+    "image_path": "",
+    "voice_id": "54a5170264694bfc8e9ad98df7bd89c3",
+    "created": "2026-04-21",
+    "tags": [
+      "human",
+      "realistic",
+      "professional",
+      "ads"
+    ]
+  }
+]

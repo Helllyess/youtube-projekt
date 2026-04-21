@@ -316,7 +316,7 @@ class App(ctk.CTk):
             self.nav_btns[label] = btn
 
         _section(sidebar, "Einstellungen")
-        for icon, label in [("🎨", "Design"), ("🎙️", "Stimmen"),
+        for icon, label in [("🎨", "Design"), ("🎙️", "Stimmen"), ("🎭", "Charaktere"),
                              ("⚖️", "Regeln"), ("📺", "Kanäle"), ("📋", "Log")]:
             btn = ctk.CTkButton(
                 sidebar, text=f"  {icon}   {label}",
@@ -349,6 +349,7 @@ class App(ctk.CTk):
         self._build_page_story_planer()
         self._build_page_design()
         self._build_page_voices()
+        self._build_page_characters()
         self._build_page_rules()
         self._build_page_channels()
         self._build_page_log()
@@ -378,6 +379,8 @@ class App(ctk.CTk):
             self._render_suggestions()
         if name == "Ergebnisse":
             self._render_ergebnisse()
+        if name == "Charaktere":
+            self._render_characters()
 
     # ── Hilfsfunktionen ──────────────────────────────────────────
 
@@ -2613,6 +2616,275 @@ class App(ctk.CTk):
     # SEITE 6: KANÄLE
     # ═════════════════════════════════════════════════════════════
 
+    # ═════════════════════════════════════════════════════════════
+    # SEITE: CHARAKTERE
+    # ═════════════════════════════════════════════════════════════
+
+    def _build_page_characters(self):
+        page = ctk.CTkFrame(self.content, fg_color="transparent")
+        self.pages["Charaktere"] = page
+
+        scroll = ctk.CTkScrollableFrame(page, fg_color="transparent")
+        scroll.pack(fill="both", expand=True, padx=16, pady=12)
+
+        top = ctk.CTkFrame(scroll, fg_color="transparent")
+        top.pack(fill="x", pady=(0, 12))
+
+        ctk.CTkLabel(top, text="🎭  AI-Charaktere",
+                     font=ctk.CTkFont(size=16, weight="bold"),
+                     text_color=C["text"]).pack(side="left")
+
+        ctk.CTkButton(top, text="＋  Neuer Charakter",
+                      font=ctk.CTkFont(size=12, weight="bold"), height=34,
+                      fg_color=C["purple"], hover_color=C["accent"],
+                      corner_radius=8,
+                      command=self._open_new_character_dialog).pack(side="right")
+
+        ctk.CTkLabel(scroll,
+                     text="Wähle einen Charakter für deine TikTok-Videos. "
+                          "Jeder Kanal kann einen eigenen Charakter bekommen.",
+                     font=ctk.CTkFont(size=11), text_color=C["muted"],
+                     justify="left").pack(anchor="w", pady=(0, 10))
+
+        self.char_list = ctk.CTkFrame(scroll, fg_color="transparent")
+        self.char_list.pack(fill="both", expand=True)
+
+    def _render_characters(self):
+        for w in self.char_list.winfo_children():
+            w.destroy()
+
+        from character_creator import load_characters, init_starter_characters
+        init_starter_characters()
+        characters = load_characters()
+
+        _MOVE_LABEL = {
+            "talking": "💬 Spricht",
+            "dancing": "💃 Tanzt",
+            "both":    "💬💃 Spricht & Tanzt",
+        }
+        _STYLE_COLOR = {
+            "talking": C["accent"],
+            "dancing": C["purple"],
+            "both":    C["orange"],
+        }
+
+        cols = 2
+        grid = ctk.CTkFrame(self.char_list, fg_color="transparent")
+        grid.pack(fill="both", expand=True)
+        grid.columnconfigure(0, weight=1)
+        grid.columnconfigure(1, weight=1)
+
+        for i, ch in enumerate(characters):
+            row, col = divmod(i, cols)
+            mv = ch.get("movement_style", "talking")
+            mv_label = _MOVE_LABEL.get(mv, mv)
+            mv_color = _STYLE_COLOR.get(mv, C["accent"])
+
+            card = ctk.CTkFrame(grid, fg_color=C["card"], corner_radius=12,
+                                border_width=1, border_color=C["border"])
+            card.grid(row=row, column=col, padx=6, pady=6, sticky="nsew")
+
+            # Header
+            hdr = ctk.CTkFrame(card, fg_color=C["active_bg"], corner_radius=0,
+                                height=48)
+            hdr.pack(fill="x")
+            hdr.pack_propagate(False)
+
+            ctk.CTkLabel(hdr, text=f"{ch.get('emoji','🎭')}  {ch['name']}",
+                         font=ctk.CTkFont(size=14, weight="bold"),
+                         text_color=C["accent"]).pack(side="left", padx=14, pady=12)
+
+            ctk.CTkLabel(hdr, text=mv_label,
+                         font=ctk.CTkFont(size=10, weight="bold"),
+                         text_color=mv_color).pack(side="right", padx=12)
+
+            # Body
+            body = ctk.CTkFrame(card, fg_color="transparent")
+            body.pack(fill="x", padx=14, pady=10)
+
+            ctk.CTkLabel(body, text=ch.get("description", ""),
+                         font=ctk.CTkFont(size=11), text_color=C["muted"],
+                         wraplength=260, justify="left").pack(anchor="w")
+
+            # Tags
+            tags = ch.get("tags", [])
+            if tags:
+                tag_row = ctk.CTkFrame(body, fg_color="transparent")
+                tag_row.pack(anchor="w", pady=(6, 0))
+                for tag in tags[:4]:
+                    ctk.CTkLabel(tag_row, text=f"#{tag}",
+                                 font=ctk.CTkFont(size=9),
+                                 text_color=C["muted"]).pack(side="left", padx=2)
+
+            # Image status
+            has_img = bool(ch.get("image_path") and Path(ch["image_path"]).exists())
+            img_txt = "✅ Bild vorhanden" if has_img else "⚠️ Kein Bild – Text-to-Video"
+            img_col = C["green"] if has_img else C["orange"]
+            ctk.CTkLabel(body, text=img_txt,
+                         font=ctk.CTkFont(size=10),
+                         text_color=img_col).pack(anchor="w", pady=(4, 0))
+
+            # Buttons
+            btn_row = ctk.CTkFrame(card, fg_color="transparent")
+            btn_row.pack(fill="x", padx=14, pady=(0, 12))
+
+            cid = ch["id"]
+            ctk.CTkButton(btn_row, text="✏️ Bearbeiten", height=28, width=110,
+                          font=ctk.CTkFont(size=11), corner_radius=6,
+                          fg_color=C["active_bg"], hover_color=C["border"],
+                          text_color=C["accent"],
+                          command=lambda c=ch: self._open_edit_character_dialog(c)
+                          ).pack(side="left", padx=(0, 6))
+
+            ctk.CTkButton(btn_row, text="🎬 Test-Video", height=28, width=110,
+                          font=ctk.CTkFont(size=11), corner_radius=6,
+                          fg_color=C["purple"], hover_color=C["accent_h"],
+                          text_color="white",
+                          command=lambda c=cid: self._test_character(c)
+                          ).pack(side="left")
+
+    def _open_new_character_dialog(self):
+        self._open_edit_character_dialog(None)
+
+    def _open_edit_character_dialog(self, character: dict | None):
+        """Dialog zum Erstellen oder Bearbeiten eines Charakters."""
+        is_new = character is None
+        ch = character or {
+            "id": "", "name": "", "emoji": "🎭", "description": "",
+            "base_prompt": "", "visual_style": "", "movement_style": "both",
+            "image_path": "", "voice_id": "", "tags": [],
+        }
+
+        win = ctk.CTkToplevel(self)
+        win.title("✨ Neuer Charakter" if is_new else f"✏️ {ch['name']}")
+        win.geometry("520x620")
+        win.resizable(False, False)
+        win.grab_set()
+        win.configure(fg_color=C["bg"])
+
+        scroll = ctk.CTkScrollableFrame(win, fg_color="transparent")
+        scroll.pack(fill="both", expand=True, padx=20, pady=16)
+
+        def _row(label, var, height=32):
+            r = ctk.CTkFrame(scroll, fg_color="transparent")
+            r.pack(fill="x", pady=3)
+            ctk.CTkLabel(r, text=label, width=130, font=ctk.CTkFont(size=11),
+                         text_color=C["muted"], anchor="w").pack(side="left")
+            if height == 32:
+                e = ctk.CTkEntry(r, textvariable=var, height=height,
+                                 fg_color=C["input"], border_color=C["border"],
+                                 text_color=C["text"])
+            else:
+                e = ctk.CTkTextbox(r, height=height, fg_color=C["input"],
+                                   border_color=C["border"], text_color=C["text"],
+                                   border_width=1)
+                e.insert("1.0", var if isinstance(var, str) else var.get())
+            e.pack(side="left", fill="x", expand=True)
+            return e
+
+        ctk.CTkLabel(scroll, text="Charakter-Profil",
+                     font=ctk.CTkFont(size=13, weight="bold"),
+                     text_color=C["text"]).pack(anchor="w", pady=(0, 8))
+
+        id_var    = ctk.StringVar(value=ch["id"])
+        name_var  = ctk.StringVar(value=ch["name"])
+        emoji_var = ctk.StringVar(value=ch.get("emoji", "🎭"))
+        img_var   = ctk.StringVar(value=ch.get("image_path", ""))
+        voice_var = ctk.StringVar(value=ch.get("voice_id", ""))
+        tags_var  = ctk.StringVar(value=", ".join(ch.get("tags", [])))
+
+        _row("ID (kein Leerzeichen):", id_var)
+        _row("Name:", name_var)
+        _row("Emoji:", emoji_var)
+
+        ctk.CTkLabel(scroll, text="Bewegungs-Stil:",
+                     font=ctk.CTkFont(size=11), text_color=C["muted"]).pack(anchor="w", pady=(6, 2))
+        mv_var = ctk.StringVar(value=ch.get("movement_style", "both"))
+        mv_row = ctk.CTkFrame(scroll, fg_color="transparent")
+        mv_row.pack(fill="x")
+        for val, lbl in [("talking","💬 Spricht"), ("dancing","💃 Tanzt"), ("both","💬💃 Beides")]:
+            ctk.CTkRadioButton(mv_row, text=lbl, variable=mv_var, value=val,
+                               fg_color=C["purple"], text_color=C["text"],
+                               font=ctk.CTkFont(size=11)).pack(side="left", padx=8)
+
+        ctk.CTkLabel(scroll, text="Aussehen-Prompt (für Runway):",
+                     font=ctk.CTkFont(size=11), text_color=C["muted"]).pack(anchor="w", pady=(8, 2))
+        prompt_box = ctk.CTkTextbox(scroll, height=80, fg_color=C["input"],
+                                    border_color=C["border"], text_color=C["text"],
+                                    border_width=1, font=ctk.CTkFont(size=11))
+        prompt_box.insert("1.0", ch.get("base_prompt", ""))
+        prompt_box.pack(fill="x")
+
+        ctk.CTkLabel(scroll, text="Visueller Stil (Lighting, Farben, etc.):",
+                     font=ctk.CTkFont(size=11), text_color=C["muted"]).pack(anchor="w", pady=(6, 2))
+        style_box = ctk.CTkTextbox(scroll, height=50, fg_color=C["input"],
+                                   border_color=C["border"], text_color=C["text"],
+                                   border_width=1, font=ctk.CTkFont(size=11))
+        style_box.insert("1.0", ch.get("visual_style", ""))
+        style_box.pack(fill="x")
+
+        _row("Bild-Pfad (optional):", img_var)
+        _row("Tags (kommagetrennt):", tags_var)
+
+        ctk.CTkLabel(scroll, text="Beschreibung:",
+                     font=ctk.CTkFont(size=11), text_color=C["muted"]).pack(anchor="w", pady=(6, 2))
+        desc_box = ctk.CTkTextbox(scroll, height=50, fg_color=C["input"],
+                                  border_color=C["border"], text_color=C["text"],
+                                  border_width=1, font=ctk.CTkFont(size=11))
+        desc_box.insert("1.0", ch.get("description", ""))
+        desc_box.pack(fill="x")
+
+        def _save():
+            from character_creator import add_character
+            new_ch = {
+                "id":             id_var.get().strip().replace(" ", "_").lower(),
+                "name":           name_var.get().strip(),
+                "emoji":          emoji_var.get().strip() or "🎭",
+                "description":    desc_box.get("1.0", "end").strip(),
+                "base_prompt":    prompt_box.get("1.0", "end").strip(),
+                "visual_style":   style_box.get("1.0", "end").strip(),
+                "movement_style": mv_var.get(),
+                "image_path":     img_var.get().strip(),
+                "voice_id":       voice_var.get().strip(),
+                "tags":           [t.strip() for t in tags_var.get().split(",") if t.strip()],
+                "created":        _dt.now().strftime("%Y-%m-%d"),
+            }
+            if not new_ch["id"] or not new_ch["name"]:
+                self._log("❌ ID und Name sind Pflichtfelder")
+                return
+            add_character(new_ch)
+            self._log(f"✅ Charakter '{new_ch['name']}' gespeichert")
+            self.after(0, self._render_characters)
+            win.destroy()
+
+        ctk.CTkButton(win, text="💾  Speichern", height=36,
+                      font=ctk.CTkFont(size=13, weight="bold"),
+                      fg_color=C["purple"], hover_color=C["accent"],
+                      corner_radius=8, command=_save).pack(pady=12, padx=20, fill="x")
+
+    def _test_character(self, character_id: str):
+        """Erstellt ein kurzes Test-Video mit dem Charakter (dry-run)."""
+        self._log(f"🎭 Test-Video für Charakter '{character_id}' gestartet...")
+        self._log("   (Benötigt Runway API-Credits – ~$0.25)")
+
+        def _run():
+            try:
+                from character_creator import get_character
+                ch = get_character(character_id)
+                if not ch:
+                    self.after(0, lambda: self._log(f"❌ Charakter '{character_id}' nicht gefunden"))
+                    return
+                self.after(0, lambda: self._log(
+                    f"   Charakter: {ch['emoji']} {ch['name']}\n"
+                    f"   Prompt: {ch['base_prompt'][:80]}...\n"
+                    f"   Zum testen: python character_creator.py --character {character_id} "
+                    f"--audio output/voiceover.mp3 --output output/test_char.mp4"
+                ))
+            except Exception as e:
+                self.after(0, lambda: self._log(f"❌ Fehler: {e}"))
+
+        threading.Thread(target=_run, daemon=True).start()
+
     def _build_page_channels(self):
         page = ctk.CTkFrame(self.content, fg_color="transparent")
         self.pages["Kanäle"] = page
@@ -2863,6 +3135,29 @@ class App(ctk.CTk):
         _toggle_ads_frame()
 
         # Speichern
+        # Charakter-Zuweisung
+        char_frame = ctk.CTkFrame(win, fg_color=C["card"], corner_radius=10,
+                                   border_width=1, border_color=C["border"])
+        char_frame.pack(fill="x", padx=24, pady=(0, 8))
+        ctk.CTkLabel(char_frame, text="🎭  TikTok-Charakter:",
+                     font=ctk.CTkFont(size=12, weight="bold"),
+                     text_color=C["text"]).pack(anchor="w", padx=12, pady=(10, 4))
+
+        from character_creator import load_characters, init_starter_characters
+        init_starter_characters()
+        char_options = ["(Kein Charakter)"] + [
+            f"{c.get('emoji','')} {c['name']} [{c['id']}]"
+            for c in load_characters()
+        ]
+        current_char = cfg.get("character_id", "")
+        current_display = next((o for o in char_options if f"[{current_char}]" in o),
+                               "(Kein Charakter)")
+        char_var = ctk.StringVar(value=current_display)
+        ctk.CTkOptionMenu(char_frame, variable=char_var, values=char_options,
+                          fg_color=C["input"], button_color=C["accent"],
+                          text_color=C["text"],
+                          font=ctk.CTkFont(size=11)).pack(fill="x", padx=12, pady=(0, 10))
+
         def _save():
             cfg["content_type"] = ct_var.get()
             cfg["ads_mode"] = am_var.get()
@@ -2871,10 +3166,17 @@ class App(ctk.CTk):
             cfg["product"]["description"] = prod_desc_var.get()
             cfg["product"]["image_path"] = prod_img_var.get()
 
+            sel = char_var.get()
+            if "[" in sel and "]" in sel:
+                cfg["character_id"] = sel.split("[")[-1].rstrip("]")
+            else:
+                cfg.pop("character_id", None)
+
             with open(cfg_path, "w", encoding="utf-8") as f:
                 json.dump(cfg, f, ensure_ascii=False, indent=2)
 
-            self._log(f"✅ Kanal '{cid}': Content-Typ → {cfg['content_type']}, Ads-Modus → {cfg['ads_mode']}")
+            self._log(f"✅ Kanal '{cid}': Typ={cfg['content_type']} · "
+                      f"Charakter={cfg.get('character_id','keiner')}")
             self.after(0, self._render_channels)
             win.destroy()
 
