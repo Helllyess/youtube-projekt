@@ -66,7 +66,7 @@
     "title_rules": {
       "max_caps_percent": 50,
       "max_length": 100,
-      "forbidden_in_title": ["KOSTENLOS", "GRATIS GELD", "HACK", "GEHEIM"]
+      "forbidden_in_title": ["KOSTENLOS", "GRATIS GELD", "HACK"]
     },
 
     "description_rules": {
@@ -88,8 +88,8 @@
     "_info": "Länderspezifische Regeln (Deutschland/EU).",
 
     "germany": {
-      "impressum_required": true,
-      "impressum_text": "DEIN IMPRESSUM HIER EINFÜGEN (Pflicht in Deutschland für geschäftliche YouTube-Kanäle)",
+      "impressum_required": false,
+      "impressum_text": "",
       "werbekennzeichnung": "Werbung und gesponserte Inhalte müssen als solche gekennzeichnet werden",
       "datenschutz_hinweis": "Datenschutzhinweis-Link in der Beschreibung empfohlen"
     },

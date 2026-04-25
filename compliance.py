@@ -102,12 +102,27 @@ class ComplianceChecker:
         logger.info("🔧 Repariere Compliance-Probleme...")
 
         # 1. Disclaimers einfügen wenn fehlend
-        if not compliance_result.get("disclaimer_present"):
-            disclaimer_text = self._build_full_disclaimer()
+        disclaimer_text = self._build_full_disclaimer()
+
+        # Script / Outro
+        if not self._text_has_disclaimer(script.get("full_text", "")):
             script["outro"] = f"{script.get('outro', '')}\n\n⚠️ DISCLAIMER:\n{disclaimer_text}"
             script["full_text"] = f"{script.get('full_text', '')}\n\n{disclaimer_text}"
-            script["description"] = f"{script.get('description', '')}\n\n⚠️ {disclaimer_text}"
-            logger.info("   ✓ Disclaimers eingefügt")
+            logger.info("   ✓ Disclaimer zum Script hinzugefügt")
+
+        # Beschreibung – immer separat prüfen
+        desc = script.get("description", "")
+        if not self._text_has_disclaimer(desc):
+            desc = f"{desc}\n\n⚠️ {disclaimer_text}"
+            logger.info("   ✓ Disclaimer zur Beschreibung hinzugefügt")
+
+        # KI-Disclaimer in Beschreibung
+        ai_disc = self.rules.get("disclaimers", {}).get("ai_generated_disclaimer", "")
+        if ai_disc and "ki" not in desc.lower() and "ai" not in desc.lower():
+            desc = f"{desc}\n🤖 {ai_disc}"
+            logger.info("   ✓ KI-Disclaimer zur Beschreibung hinzugefügt")
+
+        script["description"] = desc
 
         # 2. Verbotene Wörter ersetzen
         replacements = self.rules.get("forbidden_words", {}).get("replacements", {})
