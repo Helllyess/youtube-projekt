@@ -2,7 +2,7 @@
   "id": "kanal_hauptkanal",
   "name": "Mein Hauptkanal",
   "platform": "youtube",
-  "niche": "finance_daytrading",
+  "niche": "storytelling",
   "language": "de",
   "active": true,
 
@@ -26,23 +26,25 @@
   },
 
   "topics": [
-    "Daytrading Strategien für Anfänger",
-    "Aktienmarkt Analyse heute",
-    "Kryptowährungen 2025",
-    "Trading Psychologie",
-    "Technische Analyse Grundlagen",
-    "Passives Einkommen Aktien",
-    "Dividendenstrategie",
-    "Vermögensaufbau mit ETFs"
+    "Historische Schlachten und ihre geheimen Wendepunkte",
+    "Faszinierende Biographien vergessener Genies",
+    "Ungeklärte Mysterien der Weltgeschichte",
+    "Wahre Verbrechen und dramatische Gerichtsverfahren",
+    "Verrückte Wissenschafts-Experimente die alles verändert haben",
+    "Kuriose Fakten die du nicht glauben wirst",
+    "Verschwundene Zivilisationen und ihre Geheimnisse",
+    "Die dunkelsten Kapitel der Geschichte",
+    "Berühmte Betrüger und ihre unglaublichen Maschen",
+    "Extreme Überlebensgeschichten die Geschichte schrieben"
   ],
 
   "default_tags": [
-    "Daytrading", "Aktien", "Trading", "Finanzen", "Börse",
-    "Investieren", "Stock Market", "Krypto", "ETF"
+    "Geschichte", "Storytelling", "Doku", "Biographie", "Mystery",
+    "True Crime", "Fakten", "Wissen", "History", "Geheimnisse"
   ],
 
   "branding": {
-    "outro_text": "Abonniere den Kanal für tägliche Finance-Insights!",
+    "outro_text": "Abonniere für fesselnde Storys die du nirgendwo anders findest!",
     "watermark": false
   },
 
