@@ -29,9 +29,11 @@ def load_settings(path: str = "config/settings.json") -> dict:
     load_dotenv()
     with open(path, "r", encoding="utf-8") as f:
         settings = json.load(f)
-    settings["api_keys"]["openai"]     = os.environ.get("OPENAI_API_KEY", "")
-    settings["api_keys"]["fish_audio"] = os.environ.get("FISH_AUDIO_API_KEY", "")
-    settings["api_keys"]["runway"]     = os.environ.get("RUNWAY_API_KEY", "")
+    settings["api_keys"]["openai"]              = os.environ.get("OPENAI_API_KEY", "")
+    settings["api_keys"]["fish_audio"]          = os.environ.get("FISH_AUDIO_API_KEY", "")
+    settings["api_keys"]["runway"]              = os.environ.get("RUNWAY_API_KEY", "")
+    settings["api_keys"]["tiktok_client_key"]   = os.environ.get("TIKTOK_CLIENT_KEY", "")
+    settings["api_keys"]["tiktok_client_secret"]= os.environ.get("TIKTOK_CLIENT_SECRET", "")
     return settings
 
 
@@ -45,7 +47,7 @@ def setup_logging(settings: dict) -> logging.Logger:
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
         handlers=[
             logging.FileHandler(log_cfg.get("file", "logs/automation.log"), encoding="utf-8"),
-            logging.StreamHandler(sys.stdout),
+            logging.StreamHandler(open(sys.stdout.fileno(), mode='w', encoding='utf-8', closefd=False)),
         ],
     )
     return logging.getLogger("main")

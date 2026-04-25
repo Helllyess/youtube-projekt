@@ -1341,12 +1341,18 @@ class App(ctk.CTk):
                               command=lambda p=vid_path: self._open_file(p)).pack(side="left", padx=1)
 
             if status == "local":
-                # 🚀 JETZT hochladen (manueller Upload)
-                ctk.CTkButton(btn_row, text="🚀 Hochladen", width=90, height=26,
+                # 🚀 YouTube hochladen
+                ctk.CTkButton(btn_row, text="▶ YouTube", width=80, height=26,
                               font=ctk.CTkFont(size=10, weight="bold"), corner_radius=4,
                               fg_color=C["green"], hover_color="#059669",
                               text_color="white",
                               command=lambda vid=vid_id: self._upload_video_now(vid)).pack(side="left", padx=1)
+                # 📱 TikTok hochladen
+                ctk.CTkButton(btn_row, text="📱 TikTok", width=78, height=26,
+                              font=ctk.CTkFont(size=10, weight="bold"), corner_radius=4,
+                              fg_color="#010101", hover_color="#333333",
+                              text_color="white",
+                              command=lambda vid=vid_id: self._upload_tiktok_now(vid)).pack(side="left", padx=1)
                 # 📅 Planen
                 ctk.CTkButton(btn_row, text="📅", width=28, height=26,
                               font=ctk.CTkFont(size=11), corner_radius=4,
@@ -1446,6 +1452,48 @@ class App(ctk.CTk):
                 self.after(0, self._render_videos)
 
         threading.Thread(target=do_up, daemon=True).start()
+
+    def _upload_tiktok_now(self, vid_id: int):
+        """Lädt ein Video auf TikTok hoch (Draft / SELF_ONLY in Sandbox)."""
+        if self.running:
+            self._log("⚠️ Eine Aktion läuft bereits")
+            return
+        history = self._load_video_history()
+        video = next((v for v in history if v.get("id") == vid_id), None)
+        if not video:
+            self._log(f"⚠️ Video #{vid_id} nicht gefunden")
+            return
+        vid_path = video.get("video_path", "")
+        if not vid_path or not Path(vid_path).exists():
+            self._log("⚠️ Video-Datei nicht gefunden")
+            return
+        self._log(f"📱 TikTok Upload startet: {video.get('title', '?')}")
+        self._log("🌐 Browser öffnet sich – bitte bei TikTok einloggen...")
+        self._set_running(True)
+
+        def do_tiktok():
+            try:
+                from tiktok_uploader import TikTokUploader
+                up = TikTokUploader(self.settings)
+                publish_id = up.upload(
+                    video_path=vid_path,
+                    title=video.get("title", "ContentStudio Video"),
+                    privacy_level="SELF_ONLY",
+                )
+                for v in history:
+                    if v.get("id") == vid_id:
+                        v["tiktok_publish_id"] = publish_id
+                f = BASE_DIR / "config" / "video_history.json"
+                with open(f, "w", encoding="utf-8") as fp:
+                    json.dump(history, fp, ensure_ascii=False, indent=2)
+                self.after(0, lambda: self._log(f"✅ TikTok Draft erstellt – publish_id: {publish_id}"))
+            except Exception as e:
+                self.after(0, lambda: self._log(f"❌ TikTok Upload fehlgeschlagen: {e}"))
+            finally:
+                self.after(0, lambda: self._set_running(False))
+                self.after(0, self._render_videos)
+
+        threading.Thread(target=do_tiktok, daemon=True).start()
 
     def _delete_video(self, vid_id: int, title: str = ""):
         """Verwirft ein Video (entfernt aus Historie, Dateien bleiben erhalten)."""
