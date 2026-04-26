@@ -39,25 +39,11 @@ class VideoCreator:
         return RESOLUTION_LANDSCAPE
 
     def create(self, audio_path: str, script: dict, output_path: str, temp_dir: str = "output/temp") -> str:
-        """Erstellt ein vollständiges Video mit MoviePy."""
+        """Erstellt ein vollständiges Video mit ffmpeg (kein ImageMagick nötig)."""
         Path(temp_dir).mkdir(parents=True, exist_ok=True)
         Path(output_path).parent.mkdir(parents=True, exist_ok=True)
-
         logger.info(f"Video-Erstellung gestartet: {output_path}")
-
-        try:
-            from moviepy.editor import (
-                AudioFileClip, ColorClip, TextClip, CompositeVideoClip,
-                concatenate_videoclips
-            )
-            return self._create_with_moviepy(
-                audio_path, script, output_path, temp_dir,
-                AudioFileClip, ColorClip, TextClip, CompositeVideoClip,
-                concatenate_videoclips
-            )
-        except ImportError:
-            logger.warning("MoviePy nicht verfügbar. Erstelle einfaches Video...")
-            return self._create_simple_video(audio_path, script, output_path)
+        return self._create_ffmpeg_video(audio_path, script, output_path)
 
     def _create_with_moviepy(self, audio_path, script, output_path, temp_dir,
                               AudioFileClip, ColorClip, TextClip, CompositeVideoClip,
@@ -177,11 +163,11 @@ class VideoCreator:
         logger.info(f"  Video fertig: {output_path} ({size_mb:.1f} MB, {fmt})")
         return output_path
 
-    def _create_simple_video(self, audio_path: str, script: dict, output_path: str) -> str:
-        """Fallback: Einfaches Video mit ffmpeg direkt."""
+    def _create_ffmpeg_video(self, audio_path: str, script: dict, output_path: str) -> str:
+        """Erstellt Video mit ffmpeg drawtext – kein ImageMagick nötig."""
         import subprocess
 
-        # Dauer via ffprobe ermitteln für korrekte Formatwahl
+        # Dauer ermitteln
         try:
             probe = subprocess.run(
                 ["ffprobe", "-v", "error", "-show_entries", "format=duration",
@@ -193,32 +179,101 @@ class VideoCreator:
             duration = 999
 
         resolution = self._pick_resolution(duration)
-        size_str = f"{resolution[0]}x{resolution[1]}"
+        w, h = resolution
+        size_str = f"{w}x{h}"
+        is_portrait = h > w
 
-        try:
-            cmd = [
-                "ffmpeg", "-y",
-                "-f", "lavfi",
-                "-i", f"color=c=0x0A0A14:size={size_str}:rate=30",
-                "-i", audio_path,
-                "-shortest",
-                "-c:v", "libx264",
-                "-c:a", "aac",
-                "-b:a", "128k",
-                "-pix_fmt", "yuv420p",
-                output_path,
-            ]
+        # Windows-Schriftart (unterstützt Umlaute)
+        font_path = "C\\:/Windows/Fonts/arialbd.ttf"
+        font_path_regular = "C\\:/Windows/Fonts/arial.ttf"
 
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
-            if result.returncode != 0:
-                raise RuntimeError(f"ffmpeg Fehler: {result.stderr}")
+        title = self._clean_text(script.get("title", "ContentStudio Video"))
+        sections = script.get("sections", [])
 
-            logger.info(f"Einfaches Video erstellt: {output_path} ({size_str})")
-            return output_path
+        font_size = 54 if not is_portrait else 44
+        text_w = w - 120
 
-        except Exception as e:
-            logger.error(f"Video-Erstellung fehlgeschlagen: {e}")
-            raise
+        # Drawtext-Filter aufbauen
+        filters = []
+
+        # Hintergrund: dunkles Indigo
+        bg_color = "0x0D0D1A"
+
+        # Titel (erste 5 Sekunden)
+        title_escaped = self._escape_ffmpeg(title[:60])
+        filters.append(
+            f"drawtext=fontfile='{font_path}':text='{title_escaped}':"
+            f"fontcolor=white:fontsize={font_size}:"
+            f"x=(w-text_w)/2:y=(h-text_h)/2:"
+            f"enable='between(t,0,5)'"
+        )
+
+        # Sektions-Titel (gleichmäßig verteilt nach Sekunde 6)
+        if sections and duration > 10:
+            sec_duration = (duration - 10) / max(len(sections), 1)
+            for i, sec in enumerate(sections[:6]):
+                t_start = 6 + i * sec_duration
+                t_end = t_start + min(sec_duration * 0.4, 4)
+                sec_title = self._escape_ffmpeg(self._clean_text(sec.get("title", ""))[:50])
+                if sec_title:
+                    filters.append(
+                        f"drawtext=fontfile='{font_path}':"
+                        f"text='{sec_title}':"
+                        f"fontcolor=#A78BFA:fontsize={font_size - 12}:"
+                        f"x=(w-text_w)/2:y={h // 3}:"
+                        f"enable='between(t,{t_start:.1f},{t_end:.1f})'"
+                    )
+
+        # Disclaimer am Ende (nur Landscape)
+        if not is_portrait and duration > 8:
+            disc = self._escape_ffmpeg("Nur zu Unterhaltungs- und Bildungszwecken.")
+            filters.append(
+                f"drawtext=fontfile='{font_path_regular}':"
+                f"text='{disc}':"
+                f"fontcolor=#888888:fontsize=22:"
+                f"x=(w-text_w)/2:y={h - 70}:"
+                f"enable='between(t,{duration - 5:.1f},{duration:.1f})'"
+            )
+
+        vf = ", ".join(filters) if filters else "null"
+
+        cmd = [
+            "ffmpeg", "-y",
+            "-f", "lavfi",
+            "-i", f"color=c={bg_color}:size={size_str}:rate={self.fps}",
+            "-i", audio_path,
+            "-shortest",
+            "-vf", vf,
+            "-c:v", "libx264",
+            "-c:a", "aac",
+            "-b:a", "192k",
+            "-pix_fmt", "yuv420p",
+            "-preset", "fast",
+            output_path,
+        ]
+
+        logger.info(f"  ffmpeg drawtext ({size_str}, {len(sections)} Sektionen)...")
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+        if result.returncode != 0:
+            logger.error(f"ffmpeg Fehler: {result.stderr[-500:]}")
+            raise RuntimeError(f"Video-Erstellung fehlgeschlagen: {result.stderr[-200:]}")
+
+        size_mb = os.path.getsize(output_path) / (1024 * 1024)
+        fmt = "9:16 (Short)" if is_portrait else "16:9"
+        logger.info(f"  Video fertig: {output_path} ({size_mb:.1f} MB, {fmt})")
+        return output_path
+
+    def _escape_ffmpeg(self, text: str) -> str:
+        """Escaped Text für ffmpeg drawtext-Filter."""
+        text = text.replace("\\", "\\\\")
+        text = text.replace("'", "’")   # Apostroph → geschwungenes Apostroph
+        text = text.replace(":", "\\:")
+        text = text.replace("[", "\\[").replace("]", "\\]")
+        return text[:80]
+
+    def _create_simple_video(self, audio_path: str, script: dict, output_path: str) -> str:
+        """Alias für Kompatibilität."""
+        return self._create_ffmpeg_video(audio_path, script, output_path)
 
     def _clean_text(self, text: str) -> str:
         """Entfernt Sonderzeichen die TextClip nicht verarbeiten kann."""
