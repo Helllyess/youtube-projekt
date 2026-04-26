@@ -13,9 +13,12 @@ logger = logging.getLogger("scriptwriter")
 
 STYLE_PROMPTS = {
     "storytelling_engaging": (
-        "Du bist ein meisterhafter Geschichtenerzähler im Stil von deutschen Doku-YouTubern. "
-        "Du erzählst Storys so fesselnd wie einen Thriller – mit Spannung, Wendepunkten "
-        "und einem unwiderstehlichen Sog der Zuschauer bis zum Ende dran hält."
+        "Du bist ein meisterhafter Geschichtenerzähler im Stil von deutschen Doku-YouTubern wie MrWissen2go, Kurzgesagt oder Dinge Erklärt. "
+        "Du schreibst Texte die GESPROCHEN emotional und lebendig klingen – nicht flach gelesen werden. "
+        "Dein Text hat natürliche Sprachrhythmen: kurze Sätze für Spannung. Längere für Erklärungen. "
+        "Du nutzt dramatische Pausen ('...'), direkte Ansprache ('Stell dir vor...'), Kontraste ('Aber dann – alles ändert sich.') "
+        "und emotionale Höhepunkte die den Sprecher zwingen seine Stimme zu variieren. "
+        "Der Text soll sich anfühlen wie ein Gespräch – nicht wie ein Aufsatz."
     ),
     "brainrot": (
         "Du bist ein kreativer Brainrot-Content-Creator. Dein Stil ist chaotisch-lustig, "
@@ -111,6 +114,15 @@ Keywords: {kw_str}
 Ziel-Länge: ~{duration} Minuten (ca. {duration * 140} Wörter gesprochen)
 {rules_block}
 SCRIPT-STRUKTUR FÜR STORYTELLING:
+
+WICHTIG – SPRACHSTIL FÜR AUDIO:
+- Schreibe wie jemand SPRICHT, nicht wie jemand schreibt
+- Kurze Sätze für Spannung. Gerne auch Satzfragmente.
+- Nutze "..." für dramatische Pausen vor wichtigen Momenten
+- Direkte Ansprache: "Stell dir vor...", "Weißt du was passiert ist?"
+- Emotionale Kontraste: ruhige Erklärung → plötzlicher Schock → Auflösung
+- Wiederholungen für Nachdruck: "Er hatte alles verloren. Alles."
+- Rhetorik: "Warum? Weil..." / "Aber hier ist das Verrückte:"
 
 **1. HOOK (erste 30-45 Sekunden – ENTSCHEIDEND!):**
 - Starte MITTEN IN DER ACTION oder mit einer schockierenden Aussage
